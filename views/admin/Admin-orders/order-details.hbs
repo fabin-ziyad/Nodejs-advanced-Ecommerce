@@ -1,0 +1,485 @@
+<!-- WRAPPER -->
+	<div class="wrapper">
+		<!-- LEFT MAIN SIDEBAR -->
+		{{>admin-side-nav}}
+		<!--  PAGE WRAPPER -->
+		<div class="ec-page-wrapper">
+			<!-- Header -->
+			{{>admin-top-nav}}
+<!-- CONTENT WRAPPER -->
+			<div class="ec-content-wrapper">
+				<div class="content">
+					<div class="breadcrumb-wrapper breadcrumb-wrapper-2">
+						<h1>Order Detail</h1>
+						<p class="breadcrumbs"><span><a href="index-2.html">Home</a></span>
+							<span><i class="mdi mdi-chevron-right"></i></span>Orders
+						</p>
+					</div>
+					<div class="row">
+						<div class="col-12">
+							<div class="ec-odr-dtl card card-default">
+								<div class="card-header card-header-border-bottom d-flex justify-content-between">
+									<h2 class="ec-odr">Order Detail<br>
+										<span class="small">Order ID: #{{Data.Order.Order_no}}</span>
+									</h2>
+								</div>
+								<div class="card-body">
+									<div class="row">
+										<div class="col-xl-4 col-lg-6">
+											<address class="info-grid">
+												<div class="info-title"><strong>Customer:</strong></div><br>
+												<div class="info-content">
+													{{Data.Order.Address.First_Name}}  {{Data.Order.Address.Last_Name}}<br>
+													{{Data.Order.Address.Street_Address}}, {{Data.Order.Address.Street_Address1}},<br>
+													{{Data.Order.Address.City}}, {{Data.Order.Address.State}}<br>
+													 {{Data.Order.Address.Country}}, {{Data.Order.Address.Zip_Code}}<br>
+													<abbr title="Phone">P:</abbr> {{Data.Order.Address.Phone_Number}}, {{Data.Order.Address.Email}}
+												</div>
+											</address>
+										</div>
+										<div class="col-xl-4 col-lg-6">
+											<address class="info-grid">
+												<div class="info-title"><strong>Shipped To:</strong></div><br>
+												<div class="info-content">
+													Elaine Hernandez<br>
+													P. Sherman 42,<br>
+													Wallaby Way, Sidney<br>
+													<abbr title="Phone">P:</abbr> (123) 345-6789
+												</div>
+											</address>
+										</div>
+										<div class="col-xl-4 col-lg-6">
+											<address class="info-grid">
+												<div class="info-title"><strong>Payment Method:</strong></div><br>
+												<div class="info-content ">
+													<h6 class="payment-content">{{Data.Order.Payment_Method}}</b><h6>
+													{{Data.Order.Order_Date}} 
+		
+												</div>
+											</address>
+										</div>
+										
+									</div>
+									<div class="row">
+										<div class="col-md-12">
+											<h3 class="tbl-title">PRODUCT SUMMARY</h3>
+											<div class="table-responsive">
+												<table class="table table-striped o-tbl">
+													<thead>
+														<tr class="line">
+															<td><strong>#</strong></td>
+															<td class="text-center"><strong>IMAGE</strong></td>
+															<td class="text-left"><strong>PRODUCT</strong></td>
+															<td class="text-center"><strong>SIZE</strong></td>
+															<td class="text-center"><strong>COLOUR</strong></td>
+															<td class="text-center"><strong>PRICE/UNIT</strong></td>
+															<td class="text-center"><strong>QUANTITY</strong></td>
+															<td class="text-right"><strong>SUBTOTAL</strong></td>
+														</tr>
+													</thead>
+													<tbody>
+														{{#each Data.orderProducts}}
+														<tr>
+															<td>{{inc @index}}</td>
+															<td class="text-center"><a href="/admin/Product-View?id={{this.products._id}}"><img class="product-img"
+																	src="/assets/img/products/{{this.products._id}}/{{this.products._id}}1.jpg" alt="product" /></a></td>
+															<td class="text-left"><strong>{{this.products.ProductName}}</strong></td>
+															<td class="text-center"><strong>{{this.size}}</strong></td>
+															<td class="text-center"><strong>{{this.color}}</strong></td>
+															<td class="text-center">&#8377 {{this.products.ProductPrice}}</td>
+															
+															<td class="text-center">{{this.quantity}}</td>
+															<td class="text-right">{{this.total}}</td>
+														</tr>
+														{{/each}}
+														
+														<tr>
+															<td colspan="6"></td>
+															<td class="text-right"><strong>Taxes</strong></td>
+															<td class="text-right"><strong>N/A</strong></td>
+														</tr>
+														<tr>
+															<td colspan="6">
+															</td>
+															<td class="text-right"><strong>Total</strong></td>
+															<td class="text-right"><strong>&#8377 {{Data.Order.Total_Amount}}</strong></td>
+														</tr>
+
+														<tr>
+															<td colspan="6">
+															</td>
+															<td class="text-right"><strong>Payment</strong></td>
+															<td class="text-right"><strong>{{Data.Order.Payment_Method}}</strong></td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- Tracking Detail -->
+							<div class="card mt-4 trk-order" id="trk-order">
+								<div class="p-4 d-flex text-center text-white text-lg bg-dark rounded-top">
+									<span class="text-uppercase">Track - </span>
+									<span class="text-medium">{{Shipment.TrackingNo}}</span>
+									<span class="add-shipmentBtn"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#TrackingModal">
+ Edit
+</button> </span>
+
+									<!-- Modal -->
+<div class="modal fade" id="TrackingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-dark" id="exampleModalLongTitle">Update Tracking Details</h5>
+      </div>
+      <div class="modal-body">
+		<form action="" class="form-control text-dark" id="ShipmentForm">
+		<input type="text" name="orderNo" value="{{Data.Order.Order_no}}" hidden readonly>
+		<label for="tracking_no">Tracking No</label>
+        <input class="form-control" type="text" name="tracking_no" id="tracking_no" value="{{Shipment.TrackingNo}}" maxlength="22">
+		<label for="coureier_name">Courier Service Name</label>
+		<input class="form-control" type="text" name="courier_name" id="coureier_name" value="{{Shipment.CourierName}}">
+		<label for="expected_delivery">Expected Delivery Date</label>
+		<input class="form-control" type="date" name="expected_delivery" id="expected_delivery" value="{{Shipment.ExpectedDelivery}}">
+		<label for="tracking_no">Status</label>
+		<select name="courier_status" id="" class="form-select">
+			<option value="Confirmed">Confirmed Order</option>
+			<option value="Processing">Processing Order</option>
+			<option value="Dispatched">Product Dispatched</option>
+			<option value="OnDelivery">On Delivery</option>
+			<option value="Delivered">Product Delivered</option>
+			<option value="Cancelled">Order Cancelled</option>
+			<option value="Return">Return</option>
+		</select>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+    	</form>
+	  </div>
+    </div>
+  </div>
+</div>
+								</div>
+								<div
+									class="d-flex flex-wrap flex-sm-nowrap justify-content-between py-3 px-2 bg-secondary" id="ShipmentData">
+									<div class="w-100 text-center py-1 px-2"><span class="text-medium">
+											Via:</span> {{Shipment.CourierName}}</div>
+									<div class="w-100 text-center py-1 px-2"><span class="text-medium">Status:</span>
+										{{Shipment.ShipmentStatus}}</div>
+									<div class="w-100 text-center py-1 px-2"><span class="text-medium">Expected
+											Date: </span> {{ Shipment.ExpectedDelivery}}</div>
+									<div class="w-100 text-center py-1 px-2"><span class="text-medium">Updated
+										At: </span> {{ Shipment.updatedAt}}</div>
+								</div>
+								<div class="card-body">
+									<div
+										class="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x">
+										{{#ifEquals Shipment.ShipmentStatus "Confirmed"}}
+										<div class="step completed" id="ConfirmOrder">
+											<div class="step-icon-wrap">
+											<div class="step-icon "><i class="mdi mdi-cart"></i></div>
+											</div>
+											<h4 class="step-title">Confirmed Order</h4>
+											<p></p>
+										</div>
+										<div class="step " id="ProcessingOrder">
+											<div class="step-icon-wrap">
+											<div class="step-icon"><i class="mdi mdi-tumblr-reblog"></i></div>
+											</div>
+											<h4 class="step-title">Processing Order</h4>
+										</div>
+										<div class="step " id="ProductDispatched">
+											<div class="step-icon-wrap">
+												<div class="step-icon"><i class="mdi mdi-gift"></i></div>
+											</div>
+											<h4 class="step-title">Product Dispatched</h4>
+										</div>
+										<div class="step " id="OnDelivery">
+											<div class="step-icon-wrap">
+												<div class="step-icon"><i class="mdi mdi-truck-delivery"></i></div>
+											</div>
+											<h4 class="step-title">On Delivery</h4>
+										</div>
+										<div class="step " id="ProductDelivered">
+											<div class="step-icon-wrap">
+												<div class="step-icon"><i class="mdi mdi-hail"></i></div>
+											</div>
+											<h4 class="step-title">Product Delivered</h4>
+										</div>
+										<div class="step " id="OrderCancelled">
+											<div class="step-icon-wrap">
+												<div class="step-icon"><i class="mdi mdi-hail"></i></div>
+											</div>
+											<h4 class="step-title">Order Cancelled</h4>
+										</div>
+										{{/ifEquals}}
+										{{#ifEquals Shipment.ShipmentStatus "Processing"}}
+										<div class="step completed" id="ConfirmOrder">
+											<div class="step-icon-wrap">
+											<div class="step-icon "><i class="mdi mdi-cart"></i></div>
+											</div>
+											<h4 class="step-title">Confirmed Order</h4>
+											<p></p>
+										</div>
+										<div class="step completed" id="ProcessingOrder">
+											<div class="step-icon-wrap">
+											<div class="step-icon"><i class="mdi mdi-tumblr-reblog"></i></div>
+											</div>
+											<h4 class="step-title">Processing Order</h4>
+										</div>
+										<div class="step " id="ProductDispatched">
+											<div class="step-icon-wrap">
+												<div class="step-icon"><i class="mdi mdi-gift"></i></div>
+											</div>
+											<h4 class="step-title">Product Dispatched</h4>
+										</div>
+										<div class="step " id="OnDelivery">
+											<div class="step-icon-wrap">
+												<div class="step-icon"><i class="mdi mdi-truck-delivery"></i></div>
+											</div>
+											<h4 class="step-title">On Delivery</h4>
+										</div>
+										<div class="step " id="ProductDelivered">
+											<div class="step-icon-wrap">
+												<div class="step-icon"><i class="mdi mdi-hail"></i></div>
+											</div>
+											<h4 class="step-title">Product Delivered</h4>
+										</div>
+										<div class="step " id="OrderCancelled">
+											<div class="step-icon-wrap">
+												<div class="step-icon"><i class="mdi mdi-hail"></i></div>
+											</div>
+											<h4 class="step-title">Order Cancelled</h4>
+										</div>
+										
+										{{/ifEquals}}
+										
+										{{#ifEquals Shipment.ShipmentStatus "Dispatched"}}
+										<div class="step completed" id="ConfirmOrder">
+											<div class="step-icon-wrap">
+											<div class="step-icon "><i class="mdi mdi-cart"></i></div>
+											</div>
+											<h4 class="step-title">Confirmed Order</h4>
+											<p></p>
+										</div>
+										<div class="step completed" id="ProcessingOrder">
+											<div class="step-icon-wrap">
+											<div class="step-icon"><i class="mdi mdi-tumblr-reblog"></i></div>
+											</div>
+											<h4 class="step-title">Processing Order</h4>
+										</div>
+										<div class="step completed" id="ProductDispatched">
+											<div class="step-icon-wrap">
+												<div class="step-icon"><i class="mdi mdi-gift"></i></div>
+											</div>
+											<h4 class="step-title">Product Dispatched</h4>
+										</div>
+										
+										<div class="step " id="OnDelivery">
+											<div class="step-icon-wrap">
+												<div class="step-icon"><i class="mdi mdi-truck-delivery"></i></div>
+											</div>
+											<h4 class="step-title">On Delivery</h4>
+										</div>
+										<div class="step " id="ProductDelivered">
+											<div class="step-icon-wrap">
+												<div class="step-icon"><i class="mdi mdi-hail"></i></div>
+											</div>
+											<h4 class="step-title">Product Delivered</h4>
+										</div>
+										<div class="step " id="OrderCancelled">
+											<div class="step-icon-wrap">
+												<div class="step-icon"><i class="mdi mdi-hail"></i></div>
+											</div>
+											<h4 class="step-title">Order Cancelled</h4>
+										</div>
+										{{/ifEquals}}
+										{{#ifEquals Shipment.ShipmentStatus "OnDelivery"}}
+										<div class="step completed" id="ConfirmOrder">
+											<div class="step-icon-wrap">
+											<div class="step-icon "><i class="mdi mdi-cart"></i></div>
+											</div>
+											<h4 class="step-title">Confirmed Order</h4>
+											<p></p>
+										</div>
+										<div class="step completed" id="ProcessingOrder">
+											<div class="step-icon-wrap">
+											<div class="step-icon"><i class="mdi mdi-tumblr-reblog"></i></div>
+											</div>
+											<h4 class="step-title">Processing Order</h4>
+										</div>
+										<div class="step completed" id="ProductDispatched">
+											<div class="step-icon-wrap">
+												<div class="step-icon"><i class="mdi mdi-gift"></i></div>
+											</div>
+											<h4 class="step-title">Product Dispatched</h4>
+										</div>
+										<div class="step completed " id="OnDelivery">
+											<div class="step-icon-wrap">
+												<div class="step-icon"><i class="mdi mdi-truck-delivery"></i></div>
+											</div>
+											<h4 class="step-title">On Delivery</h4>
+										</div>
+										<div class="step " id="ProductDelivered">
+											<div class="step-icon-wrap">
+												<div class="step-icon"><i class="mdi mdi-hail"></i></div>
+											</div>
+											<h4 class="step-title">Product Delivered</h4>
+										</div>
+										<div class="step " id="OrderCancelled">
+											<div class="step-icon-wrap">
+												<div class="step-icon"><i class="mdi mdi-hail"></i></div>
+											</div>
+											<h4 class="step-title">Order Cancelled</h4>
+										</div>
+										{{/ifEquals}}
+										{{#ifEquals Shipment.ShipmentStatus "Delivered"}}
+										<div class="step completed" id="ConfirmOrder">
+											<div class="step-icon-wrap">
+											<div class="step-icon "><i class="mdi mdi-cart"></i></div>
+											</div>
+											<h4 class="step-title">Confirmed Order</h4>
+											<p></p>
+										</div>
+										<div class="step completed" id="ProcessingOrder">
+											<div class="step-icon-wrap">
+											<div class="step-icon"><i class="mdi mdi-tumblr-reblog"></i></div>
+											</div>
+											<h4 class="step-title">Processing Order</h4>
+										</div>
+										<div class="step completed" id="ProductDispatched">
+											<div class="step-icon-wrap">
+												<div class="step-icon"><i class="mdi mdi-gift"></i></div>
+											</div>
+											<h4 class="step-title">Product Dispatched</h4>
+										</div>
+										<div class="step completed" id="OnDelivery">
+											<div class="step-icon-wrap">
+												<div class="step-icon"><i class="mdi mdi-truck-delivery"></i></div>
+											</div>
+											<h4 class="step-title">On Delivery</h4>
+										</div>
+										<div class="step completed" id="ProductDelivered">
+											<div class="step-icon-wrap">
+												<div class="step-icon"><i class="mdi mdi-hail"></i></div>
+											</div>
+											<h4 class="step-title">Product Delivered</h4>
+										</div>
+										
+										<div class="step " id="OrderCancelled">
+											<div class="step-icon-wrap">
+												<div class="step-icon"><i class="mdi mdi-hail"></i></div>
+											</div>
+											<h4 class="step-title">Order Cancelled</h4>
+										</div>
+										{{/ifEquals}}
+										{{#ifEquals Shipment.ShipmentStatus "Cancelled"}}
+										<div class="step " id="ConfirmOrder">
+											<div class="step-icon-wrap">
+											<div class="step-icon "><i class="mdi mdi-cart"></i></div>
+											</div>
+											<h4 class="step-title">Confirmed Order</h4>
+											<p></p>
+										</div>
+										<div class="step " id="ProcessingOrder">
+											<div class="step-icon-wrap">
+											<div class="step-icon"><i class="mdi mdi-tumblr-reblog"></i></div>
+											</div>
+											<h4 class="step-title">Processing Order</h4>
+										</div>
+										<div class="step " id="ProductDispatched">
+											<div class="step-icon-wrap">
+												<div class="step-icon"><i class="mdi mdi-gift"></i></div>
+											</div>
+											<h4 class="step-title">Product Dispatched</h4>
+										</div>
+										<div class="step  " id="OnDelivery">
+											<div class="step-icon-wrap">
+												<div class="step-icon"><i class="mdi mdi-truck-delivery"></i></div>
+											</div>
+											<h4 class="step-title">On Delivery</h4>
+										</div>
+										<div class="step " id="ProductDelivered">
+											<div class="step-icon-wrap">
+												<div class="step-icon"><i class="mdi mdi-hail"></i></div>
+											</div>
+											<h4 class="step-title">Product Delivered</h4>
+										</div>
+										<div class="step orderCancelled" id="OrderCancelled">
+											<div class="step-icon-wrap">
+												<div class="step-icon"><i class="mdi mdi-hail"></i></div>
+											</div>
+											<h4 class="step-title">Order Cancelled</h4>
+										</div>
+										{{/ifEquals}}
+											{{#ifEquals Shipment.ShipmentStatus "Return"}}
+										<div class="step " id="ConfirmOrder">
+											<div class="step-icon-wrap">
+											<div class="step-icon "><i class="mdi mdi-cart"></i></div>
+											</div>
+											<h4 class="step-title">Confirmed Order</h4>
+											<p></p>
+										</div>
+										<div class="step " id="ProcessingOrder">
+											<div class="step-icon-wrap">
+											<div class="step-icon"><i class="mdi mdi-tumblr-reblog"></i></div>
+											</div>
+											<h4 class="step-title">Processing Order</h4>
+										</div>
+										<div class="step " id="ProductDispatched">
+											<div class="step-icon-wrap">
+												<div class="step-icon"><i class="mdi mdi-gift"></i></div>
+											</div>
+											<h4 class="step-title">Product Dispatched</h4>
+										</div>
+										<div class="step  " id="OnDelivery">
+											<div class="step-icon-wrap">
+												<div class="step-icon"><i class="mdi mdi-truck-delivery"></i></div>
+											</div>
+											<h4 class="step-title">On Delivery</h4>
+										</div>
+										<div class="step " id="ProductDelivered">
+											<div class="step-icon-wrap">
+												<div class="step-icon"><i class="mdi mdi-hail"></i></div>
+											</div>
+											<h4 class="step-title">Product Delivered</h4>
+										</div>
+										<div class="step " id="OrderCancelled">
+											<div class="step-icon-wrap">
+												<div class="step-icon"><i class="mdi mdi-hail"></i></div>
+											</div>
+											<h4 class="step-title">Order Cancelled</h4>
+										</div>
+										<div class="step orderReturn" id="orderReturn">
+											<div class="step-icon-wrap">
+												<div class="step-icon"><i class="mdi mdi-hail"></i></div>
+											</div>
+											<h4 class="step-title">Return</h4>
+										</div>
+										{{/ifEquals}}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div> <!-- End Content -->
+									<p class="text-center">If needed we can add the shiprocket api to track to get the exact delivery time its status etc.</p> 
+			</div> <!-- End Content Wrapper -->
+
+			<!-- Footer -->
+			<footer class="footer mt-auto">
+				<div class="copyright bg-white">
+					<p>
+						Copyright &copy; <span id="ec-year"></span><a class="text-primary"
+							href="https://themeforest.net/user/ashishmaraviya" target="_blank">Admin
+							Dashboard</a>. All Rights Reserved.
+					</p>
+				</div>
+			</footer>
+
+		</div> <!-- End Page Wrapper -->
+	</div> <!-- End Wrapper -->
+    </div>

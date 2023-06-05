@@ -1,0 +1,134 @@
+<!-- WRAPPER -->
+<div class="wrapper">
+    <!-- LEFT MAIN SIDEBAR -->
+    {{>admin-side-nav}}
+    <!--  PAGE WRAPPER -->
+    <div class="ec-page-wrapper">
+        <!-- Header -->
+        {{>admin-top-nav}}
+        <!-- CONTENT WRAPPER -->
+        <div class="ec-content-wrapper">
+            <div class="content">
+                <div class="breadcrumb-wrapper breadcrumb-wrapper-2">
+                    <h1>Orders History</h1>
+                    <p class="breadcrumbs">
+                        <span>
+                            <a href="index-2.html">Home</a>
+                        </span>
+                        <span>
+                            <i class="mdi mdi-chevron-right"></i>
+                        </span>
+                        History
+                    </p>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card card-default">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table id="responsive-data-table" class="table" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Customer</th>
+                                                <th>Items</th>
+                                                <th>Total Price</th>
+                                                <th>Status</th>
+                                                <th>Date</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{#each AllOrders}}
+                                            <tr>
+                                                <td>{{this.Order_no}}</td>
+                                                <td>{{this.User.register_Full_Name}}</td>
+                                                <td>{{this.Products_Count}}</td>
+                                                <td>{{this.Total_Amount}}</td>
+                                                <td>
+                                                   <span class="mb-2 mr-2 badge badge-primary">{{this.ShipmentSatus}}</span>
+                                                </td>
+                                                <td>{{this.Order_Date}}</td>
+                                                <td>
+                                                    <div class="btn-group mb-1">
+                                                        <a href="/admin/order-details?order={{this.Order_no}}" class="btn btn-outline-success">Info</a>
+                                                        
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <div
+                                                class="modal fade modal-Order-detail"
+                                                id="OrderInfo{{this._id}}"
+                                                tabindex="-1"
+                                                aria-hidden="true"
+                                            >
+                                                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header justify-content-end border-bottom-0">
+                                                            <button
+                                                                type="button"
+                                                                class="btn-close-icon"
+                                                                data-bs-dismiss="modal"
+                                                                aria-label="Close"
+                                                            >
+                                                                <i class="mdi mdi-close"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body pt-0">
+                                                            <div class="row no-gutters">
+                                                               
+																	<div class="desc-col col-md-2">Product</div>
+																	<div class="desc-col col-md-2">Gender</div>
+																	<div class="desc-col col-md-2">Qty</div>
+																	<div class="desc-col col-md-2">Size</div>
+																	<div class="desc-col col-md-2">Colour</div>
+																	<div class="desc-col col-md-2">view</div>
+
+                                                            </div>
+															<div class="row">
+																{{#each this.ProductDetails}}
+																
+																<div class=" col-md-2">{{this.ProductName}}</div>
+																<div class=" col-md-2">Male</div>
+																<div class=" col-md-2">{{this.quantity}}</div>
+																<div class=" col-md-2">{{this.Size}}</div>
+																<div class=" col-md-2">{{this.color}}</div>
+																<div class=" col-md-2">Amount</div>
+																
+																{{/each}}
+														</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {{/each}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Content -->
+        </div>
+        <!-- End Content Wrapper -->
+        <!-- Footer -->
+        <footer class="footer mt-auto">
+            <div class="copyright bg-white">
+                <p>
+                    Copyright &copy;
+                    <span id="ec-year"></span>
+                    <a class="text-primary" href="https://themeforest.net/user/ashishmaraviya" target="_blank">
+                        Admin
+							Dashboard
+                    </a>
+                    . All Rights Reserved.
+                </p>
+            </div>
+        </footer>
+    </div>
+    <!-- End Page Wrapper -->
+</div>
+<!-- End Wrapper -->
+</div>

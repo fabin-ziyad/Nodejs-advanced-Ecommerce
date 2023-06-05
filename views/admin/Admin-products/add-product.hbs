@@ -1,0 +1,280 @@
+
+
+	<!-- WRAPPER -->
+	<div class="wrapper">
+		<!-- LEFT MAIN SIDEBAR -->
+		{{>admin-side-nav}}
+		<!--  PAGE WRAPPER -->
+		<div class="ec-page-wrapper">
+			<!-- Header -->
+			{{>admin-top-nav}}
+			<!-- CONTENT WRAPPER -->
+
+		<!-- PAGE WRAPPER -->
+			<div class="ec-content-wrapper">
+				<div class="content">
+					<div class="breadcrumb-wrapper d-flex align-items-center justify-content-between">
+						<div>
+							<h1>Add Product</h1>
+							<p class="breadcrumbs"><span><a href="/admin/home">Home</a></span>
+								<span><i class="mdi mdi-chevron-right"></i></span>Product</p>
+						</div>
+						<div>
+							<a href="/admin/list-products" class="btn btn-primary"> View All
+							</a>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-12">
+							<div class="card card-default">
+								<div class="card-header card-header-border-bottom">
+									<h2>Add Product</h2>
+								</div>
+         				 <form class="row g-3" action="/admin/add-product" method="post" enctype="multipart/form-data">
+								<div class="card-body">
+									<div class="row ec-vendor-uploads">
+										<div class="col-lg-4">
+											<div class="ec-vendor-img-upload">
+												<div class="ec-vendor-main-img">
+													<div class="avatar-upload">
+														<div class="avatar-edit">
+															<input type='file' id="imageUpload" class="ec-image-upload" name="Image1"
+																accept=".png, .jpg, .jpeg"  required/>
+															<label for="imageUpload"><img
+																	src="/assets/img/icons/edit.svg"
+																	class="svg_img header_svg" alt="edit"/></label>
+														    </div>
+														<div class="avatar-preview ec-preview">
+															<div class="imagePreview ec-div-preview">
+																<img class="ec-image-preview" 
+																	src="/assets/img/products/vender-upload-preview.jpg"
+																	alt="edit" />
+															</div>
+														</div>
+													</div>
+													<div class="thumb-upload-set colo-md-12">
+														<div class="thumb-upload">
+															<div class="thumb-edit">
+																<input type='file' id="thumbUpload01"
+																	class="ec-image-upload" name="Image2"
+																	accept=".png, .jpg, .jpeg" required/>
+																<label for="imageUpload"><img
+																		src="/assets/img/icons/edit.svg"
+																		class="svg_img header_svg" alt="edit" /></label>
+															</div>
+															<div class="thumb-preview ec-preview">
+																<div class="image-thumb-preview">
+																		<img class="image-thumb-preview ec-image-preview"
+																		src="/assets/img/products/vender-upload-thumb-preview.jpg"
+																		alt="edit" />
+																</div>
+															</div>
+														</div>
+														<div class="thumb-upload">
+															<div class="thumb-edit">
+																<input type='file' id="thumbUpload02"
+																	class="ec-image-upload" name="Image3"
+																	accept=".png, .jpg, .jpeg" required/>
+																<label for="imageUpload"><img
+																		src="/assets/img/icons/edit.svg"
+																		class="svg_img header_svg" alt="edit" /></label>
+															</div>
+															<div class="thumb-preview ec-preview">
+																<div class="image-thumb-preview">
+																	<img class="image-thumb-preview ec-image-preview"
+																		src="/assets/img/products/vender-upload-thumb-preview.jpg"
+																		alt="edit" />
+																</div>
+															</div>
+														</div>
+
+
+														<div class="thumb-upload">
+															<div class="thumb-edit">
+																<input type='file' id="thumbUpload06"
+																	class="ec-image-upload" name="Image4"
+																	accept=".png, .jpg, .jpeg" required/>
+																<label for="imageUpload"><img
+																		src="/assets/img/icons/edit.svg"
+																		class="svg_img header_svg" alt="edit" /></label>
+															</div>
+															<div class="thumb-preview ec-preview">
+																<div class="image-thumb-preview">
+																	<img class="image-thumb-preview ec-image-preview"
+																		src="/assets/img/products/vender-upload-thumb-preview.jpg"
+																		alt="edit" />
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+
+										<div class="col-lg-8">
+											<div class="ec-vendor-upload-detail">
+												<div class="row">
+													<div class="col-md-6">
+														<label for="inputEmail4" class="form-label">Product name</label>
+														<input type="text" class="form-control slug-title" id="inputEmail4" name="ProductName" autocomplete="off" maxlength="25" required>
+													</div>
+													<div class="col-md-6 col-lg-6">
+													<label for="inputEmail4" class="form-label">Brand name</label>
+														<input type="text" class="form-control slug-title" id="inputEmail4" name="BrandName" maxlength="22" autocomplete="off" required>	
+													</div>
+													
+													</div>
+													
+													<div class="row mt-4">
+													<div class="col-md-6">
+														<label class="form-label">Select Categories</label>
+														<select  id="Categories" class="form-control form-select" name="MainCategory" onchange="FilterSubCat(this.value)" required>
+															<option selected disabled>Main Category</option>
+															{{#each AllMainCat}}
+															<option value="{{this._id}}">{{this.Category_Name}}</option>
+															{{/each}}
+														</select>
+													</div>
+													<div class="col-md-6">
+														<label class="form-label">Sub Categories</label>
+														<select  id="SubCategories" class="form-control form-select" name="SubCategory" required>
+														  <option value="" selected disabled>select sub Category</option>
+														</select>
+													</div>
+													</div> 
+													<div class="row mt-5">
+													<div class="col-md-3 col-lg-3"></div>
+													<div class="col-md-6 col-lg-6">
+													<label for="inputEmail4" class="form-label">Colour</label>
+															<div class="field_wrapper">
+    														<div class="inline-addbtn">
+															<input type="text" class="form-control"  name="Colors"  autocomplete="off" maxlength="10" required><a href="javascript:void(0);" class="add_button" title="Add field"><img class="add-icon-btn" src="/assets/img/icons/plus.png"/></a>
+														    </div>
+															</div></div>
+													<div class="col-md-3 col-lg-3"></div>
+												</div>
+													<div class="col-md-12 mt-4">
+														<label class="form-label">Short Description</label>
+														<textarea class="form-control" rows="2" name="ShortDescription" maxlength="200" required></textarea>
+													</div>
+													<div class="col-md-12 mb-25 mt-3">
+														<label class="form-label">Size</label>
+														<div class="form-checkbox-box">
+															<div class="form-check form-check-inline">
+																<input class="size" type="checkbox" name="ProductSize" value="Small">
+																<label>S</label>
+															</div>
+															<div class="form-check form-check-inline">
+																<input class="size" type="checkbox" name="ProductSize" value="Medium">
+																<label>M</label>
+															</div>
+															<div class="form-check form-check-inline">
+																<input class="size" type="checkbox" name="ProductSize" value="Large">
+																<label>L</label>
+															</div>
+															<div class="form-check form-check-inline">
+																<input class="size" type="checkbox" name="ProductSize" value="XL">
+																<label>XL</label>
+															</div>
+															<div class="form-check form-check-inline">
+																<input class="size" type="checkbox" name="ProductSize" value="XXL">
+																<label>XXL</label>
+															</div>
+															<div class="form-check form-check-inline">
+																<input type="checkbox" name="ProductSize" value="None" id="nonebox" onchange="SizeDisable()">
+																<label>None</label>
+															</div>
+															<div class="form-check form-check-inline" id="custom">
+																<div class="Custom_size_field">
+																<div class="inline-addbtn">
+																<a href="javascript:void(0);" class="custom_size" title="Custom Size"><img class="add-icon" src="/assets/img/icons/plus.png"/></a>
+																</div>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div class="row mt-3" id="Gender_field">
+														<div class="col-md-6">
+														  <label class="form-label">Gender</label>
+															<select name="Gender" class="form-select form-control" >
+																<option value="Male">Male</option>
+																<option value="Female">Female</option>
+																<option value="Both">Both</option>
+															</select>
+														</div>
+														<div class="col-md-6">
+														  <label class="form-label">MRP</label>
+															<input type="text" class="form-control"  name="MRP" autocomplete="off" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" maxlength="8" required>
+														</div>
+													</div>
+													<div class="row mt-5">
+													<div class="col-md-6">
+														
+														<label class="form-label">Price <span>( In INR )</span></label>
+														<input type="text" class="form-control" id="price1" name="ProductPrice" autocomplete="off" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" maxlength="6" required>
+													</div>
+													<div class="col-md-6">
+														<label class="form-label">Stock Quantity</label>
+														<input type="number" class="form-control" id="quantity1" name="ProductQuantity" autocomplete="off" maxlength="5" required>
+													</div>
+													</div>
+													<div class="col-md-12 mt-4">
+														<label class="form-label">Full Description</label>
+														<textarea class="form-control" rows="4" name="FullDescription" autocomplete="off" required minlength="100" maxlength="1000"></textarea>
+													</div>
+													<div class="col-md-12 mt-4">
+														<label class="form-label">Product Tags <span>( Type and
+																make comma to separate tags )</span></label>
+														<input type="text" class="form-control" id="group_tag"
+															name="ProductTags" placeholder="tags"
+															data-role="tagsinput" autocomplete="off" />
+													</div>
+													<div class="col-md-12 mt-4">
+														<button type="submit" class="btn btn-primary">Submit</button>
+													</div>
+											
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						</form>
+					</div>
+				</div> <!-- End Content -->
+			</div> <!-- End Content Wrapper -->
+
+			<!-- Footer -->
+			
+		</div> <!-- End Page Wrapper -->
+	</div> <!-- End Wrapper -->
+	
+<script>
+	function FilterSubCat(value){
+		let CatDetails=[
+		{{#each AllMainCat}}
+		{
+		  MainCategory:'{{this._id}}',
+		  SubCategory:[{{#each this.SubCategoryName}},'{{this}}'{{/each}}],
+		  SubCatId:[{{#each this.SubCatId}},'{{this}}'{{/each}}],
+		},
+		{{/each}}	
+		]
+		if(value.length==0)document.getElementById('SubCategories').innerHTML='<option value=""> Select sub category </option>';
+		else{
+			let subCatIndex;
+			for(let key in CatDetails){
+				if(CatDetails[key].MainCategory==value){
+				   subCatIndex=key
+				}
+			}
+			 var SubCatOption = "";
+                for (subCat in CatDetails[subCatIndex].SubCategory) {
+                    SubCatOption += "<option value='" + CatDetails[subCatIndex].SubCatId[subCat] + "'>" + CatDetails[subCatIndex].SubCategory[subCat] + "</option>";
+                }
+                document.getElementById('SubCategories').innerHTML = SubCatOption;
+		    }
+	    }
+</script>

@@ -1,0 +1,130 @@
+
+    <div class="page-wrapper">
+        {{>user-top-nav}}
+        <main class="main">
+        	<div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+        		<div class="container">
+        			<h1 class="page-title">Shopping Cart<span>Shop</span></h1>
+        		</div><!-- End .container -->
+        	</div><!-- End .page-header -->
+            <nav aria-label="breadcrumb" class="breadcrumb-nav">
+                <div class="container">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Shopping Cart</li>
+                    </ol>
+                </div><!-- End .container -->
+            </nav><!-- End .breadcrumb-nav -->
+
+            <div class="page-content">
+            	<div class="cart">
+	                <div class="container">
+	                	<div class="row">
+	                		<div class="col-lg-9">
+	                			<table class="table table-cart table-mobile" id="CartTable">
+									<thead>
+										<tr>
+											<th>Product</th>
+											<th>Name</th>
+											<th>Color</th>
+											<th>Size</th>
+											<th>Price</th>
+											<th>Quantity</th>
+											<th>Total</th>
+											<th></th>
+										</tr>
+									</thead>
+                                    {{#each DataObj.CartProducts}}
+        
+									<tbody>
+										<tr>
+											<td class="product-col">
+												<div class="product">
+													<figure class="product-media">
+														<a href="/item?name={{this.products.ProductName}}&id={{this.products._id}}&category={{this.products.MainCategory}}&price={{this.products.ProductPrice}}">
+															<img src="assets/img/products/{{this.products._id}}/{{this.products._id}}1.jpg" alt="Product image">
+														</a>
+													</figure>
+											</td>
+                                            <td>{{this.products.ProductName}}</td>
+                                            <td>{{this.color}}</td>
+                                            <td>{{this.size}}</td>
+											<td class="price-col">&#8377 <span class="Pricetag"> {{ this.products.ProductPrice}}</span></td>
+											<td class="quantity-col">
+                                                <div class="cart-product-quantity">
+                                                  <button class="btn-remove" type="submit" onclick="ReduceQuantity('{{this._id}}','{{this.UniqueId}}','{{../DataObj.User._id}}',-1)" ><i class="icon-minus" id="minusbtn{{this.products._id}}"></i></button>
+                                                  <span class="text-center p-2 m-0 Qtyfield" id="{{this.UniqueId}}"  value="{{this.quantity}}">{{this.quantity}}</span>
+                                                  <button class="btn-remove " type="submit" onclick="AddQuantity('{{this._id}}','{{this.UniqueId}}','{{../DataObj.User._id}}',1 )"><i class="icon-plus" id="plusbtn{{this.products._id}}"></i></button>
+                                                </div><!-- End .cart-product-quantity -->
+                                            </td>
+											<td class="total-col">&#8377 <span id="total" class="Pricetag">{{this.total}}</span></td>
+											<td class="remove-col"><button class="btn-remove" type="submit" onclick="cartProductRemove('{{this._id}}','{{this.UniqueId}}','{{../DataObj.User._id}}')"><i class="icon-close"></i></button></td>
+										</tr>
+									</tbody>
+                                    {{/each}}
+								</table><!-- End .table table-wishlist -->
+
+	                			<div class="cart-bottom">
+			            			<a href="/cart" class="btn btn-outline-dark-2"><span>UPDATE CART</span><i class="icon-refresh"></i></a>
+		            			</div><!-- End .cart-bottom -->
+	                		</div><!-- End .col-lg-9 -->
+	                		<aside class="col-lg-3">
+	                			<div class="summary summary-cart">
+	                				<h3 class="summary-title">Cart Total</h3><!-- End .summary-title -->
+
+	                				<table class="table table-summary" id="CheckoutTable">
+	                					<tbody>
+	                						<tr class="summary-subtotal">
+	                							<td>Subtotal:</td>
+	                							<td>&#8377<span id="TotalPrice" class="Pricetag"> {{DataObj.TotalPrice.total}}</span></td>
+	                						</tr><!-- End .summary-subtotal -->
+	                						<tr class="summary-shipping">
+	                							<td>Shipping:</td>
+	                							<td>&nbsp;</td>
+	                						</tr>
+
+	                						<tr class="summary-shipping-row">
+	                							<td>
+													<div class="custom-control custom-radio">
+														<input type="radio" id="free-shipping" name="shipping" class="custom-control-input" checked>
+														<label class="custom-control-label" for="free-shipping">Free Shipping</label>
+													</div><!-- End .custom-control -->
+	                							</td>
+	                							<td>Yes</td>
+	                						</tr><!-- End .summary-shipping-row -->
+
+	                						
+	                						<tr class="summary-total" >
+												<div class="checkout-code">
+            				<form action="#">
+        						<input type="text" class="form-control" required id="checkout-discount-input" placeholder="Have Coupon? Enter Here..."><button class="inline-btn">Check</button>
+            					
+            				</form>
+            			</div><!-- End .checkout-discount -->
+	                							<td>Total:</td>
+	                							<td>&#8377<span id="totalSum" class="Pricetag"> {{DataObj.TotalPrice.total}}</span></td>
+	                						</tr><!-- End .summary-total -->
+	                					</tbody>
+	                				</table><!-- End .table table-summary -->
+
+	                				<a href="/checkout" class="btn btn-outline-primary-2 btn-order btn-block">PROCEED TO CHECKOUT</a>
+	                			</div><!-- End .summary -->
+
+		            			<a href="category.html" class="btn btn-outline-dark-2 btn-block mb-3"><span>CONTINUE SHOPPING</span><i class="icon-refresh"></i></a>
+	                		</aside><!-- End .col-lg-3 -->
+	                	</div><!-- End .row -->
+	                </div><!-- End .container -->
+                </div><!-- End .cart -->
+            </div><!-- End .page-content -->
+        </main><!-- End .main -->
+
+        {{>user-footer}}
+    </div><!-- End .page-wrapper -->
+    <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
+
+    {{>mobile-menu}}
+    

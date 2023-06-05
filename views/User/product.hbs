@@ -1,0 +1,432 @@
+    <div class="page-wrapper">
+        {{>user-top-nav}}
+        <main class="main">
+            <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
+                <div class="container d-flex align-items-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Products</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Default</li>
+                    </ol>
+
+                 
+                </div><!-- End .container -->
+            </nav><!-- End .breadcrumb-nav -->
+
+            <div class="page-content">
+                <div class="container">
+                    <div class="product-details-top">
+                        <form action="/add-to-cart/{{DataObj.ProductDetails._id}}" method="post">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="product-gallery product-gallery-vertical">
+                                    <div class="row">
+                          
+                                        <figure class="product-main-image">
+                                            <img id="product-zoom" src="assets/img/products/{{DataObj.ProductDetails._id}}/{{DataObj.ProductDetails._id}}1.jpg" >
+
+                                            <a href="#" id="btn-product-gallery" class="btn-product-gallery">
+                                                <i class="icon-arrows"></i>
+                                            </a>
+                                        </figure><!-- End .product-main-image -->
+                                        
+                                        <div id="product-zoom-gallery" class="product-image-gallery">
+                                            <a class="product-gallery-item active" href="#" data-image="assets/img/products/{{DataObj.ProductDetails._id}}/{{DataObj.ProductDetails._id}}1.jpg" >
+                                                <img src="assets/img/products/{{DataObj.ProductDetails._id}}/{{DataObj.ProductDetails._id}}1.jpg" alt="product side">
+                                            </a>
+                                            <a class="product-gallery-item active" href="#" data-image="assets/img/products/{{DataObj.ProductDetails._id}}/{{DataObj.ProductDetails._id}}2.jpg" >
+                                                <img src="assets/img/products/{{DataObj.ProductDetails._id}}/{{DataObj.ProductDetails._id}}2.jpg" alt="product side">
+                                            </a>
+
+                                            <a class="product-gallery-item" href="#" data-image="assets/img/products/{{DataObj.ProductDetails._id}}/{{DataObj.ProductDetails._id}}3.jpg" >
+                                                <img src="assets/img/products/{{DataObj.ProductDetails._id}}/{{DataObj.ProductDetails._id}}3.jpg" alt="product cross">
+                                            </a>
+
+                                            <a class="product-gallery-item" href="#" data-image="assets/img/products/{{DataObj.ProductDetails._id}}/{{DataObj.ProductDetails._id}}4.jpg" >
+                                                <img src="assets/img/products/{{DataObj.ProductDetails._id}}/{{DataObj.ProductDetails._id}}4.jpg" alt="product with model">
+                                            </a>
+                                            
+                                        </div><!-- End .product-image-gallery -->
+                                    </div><!-- End .row -->
+                                </div><!-- End .product-gallery -->
+                            </div><!-- End .col-md-6 -->
+
+                            <div class="col-md-6">
+                                <div class="product-details">
+                                    <h1 class="product-title">{{DataObj.ProductDetails.ProductName}}</h1><!-- End .product-title -->
+
+                                    <div class="ratings-container">
+                                        <div class="ratings">
+                                            <div class="ratings-val" style="width: 80%;"></div><!-- End .ratings-val -->
+                                        </div><!-- End .ratings -->
+                                        <a class="ratings-text" href="#product-review-link" id="review-link">( 2 Reviews )</a>
+                                    </div><!-- End .rating-container -->
+
+                                    <div class="product-price-view">
+                                     <small><strike>₹{{DataObj.ProductDetails.MRP}}</strike></small>  <span><strong> ₹<span class="PricetagInProduct">{{DataObj.ProductDetails.ProductPrice}}</span></strong></span>
+                                    </div><!-- End .product-price -->
+
+                                    <div class="product-content">
+                                        <p>{{DataObj.ProductDetails.ShortDescription}}</p>
+                                    </div><!-- End .product-content -->
+
+                                    <div class="details-filter-row details-row-size">
+                                        <label>Color:</label>
+                                        <div class="select-custom">
+                                            <select name="Colour" id="Colour" class="form-control" required>
+                                                <option class="form-select" selected ></option>
+                                                {{#each DataObj.ProductDetails.Colors}}
+                                                <option value="{{this}}">{{this}} </option>
+                                                {{/each}}
+                                            </select>
+                                        </div><!-- End .select-custom -->
+                                    </div><!-- End .details-filter-row -->
+
+                                    <div class="details-filter-row details-row-size">
+                                        <label for="size">Size:</label>
+                                        <div class="select-custom">
+                                            <select name="size" id="size" class="form-control" required>
+                                                <option class="form-select" selected ></option>
+                                                {{#each DataObj.ProductDetails.ProductSize}}
+                                                <option class="form-select" value="{{this}}">{{this}}</option>
+                                                {{/each}} 
+                                            </select>
+                                        </div><!-- End .select-custom -->
+
+                                        <a href="#" class="size-guide"><i class="icon-th-list"></i>size guide</a>
+                                    </div><!-- End .details-filter-row -->
+
+                                    <div class="details-filter-row details-row-size">
+                                        <label for="qty">Qty:</label>
+                                        <div class="product-details-quantity">
+                                            <input type="number" id="qty" name="qty" class="form-control" value="1" min="1" max="10" step="1" data-decimals="0" required>
+                                        </div><!-- End .product-details-quantity -->
+                                    </div><!-- End .details-filter-row -->
+
+                                    <div class="product-details-action">
+                                        <button type="submit"  class="btn-product btn-cart"><span>add to cart</span></button>
+
+                                        <div class="details-action-wrapper">
+                                            <a href="javascript:wishlist('{{DataObj.ProductDetails._id}}','{{DataObj.User._id}}')" class="btn-product btn-wishlist" title="Wishlist"><span>Add to Wishlist</span></a>
+                                            
+                                        </div><!-- End .details-action-wrapper -->
+                                    </div><!-- End .product-details-action -->
+                                    
+                                    <div class="product-details-footer">
+                                        <div class="product-cat">
+                                            <span>Category:</span>
+                                            <a href="#">{{DataObj.ProductDetails.MainCategory}}</a> <span class="ml-4"><label>Sub Category:</label>
+                                            <a href="#">{{DataObj.ProductDetails.SubCategory}}</a></span>
+                                        </div><!-- End .product-cat -->
+                                       
+                                        <div class="social-icons social-icons-sm">
+                                            <span class="social-label">Share:</span>
+                                            <a href="#" class="social-icon" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
+                                            <a href="#" class="social-icon" title="Twitter" target="_blank"><i class="icon-twitter"></i></a>
+                                            <a href="#" class="social-icon" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>
+                                            <a href="#" class="social-icon" title="Pinterest" target="_blank"><i class="icon-pinterest"></i></a>
+                                        </div>
+                                    </div><!-- End .product-details-footer -->
+                                </div><!-- End .product-details -->
+                            </div><!-- End .col-md-6 -->
+                        </div><!-- End .row -->
+                        </form>
+                    </div><!-- End .product-details-top -->
+
+                    <div class="product-details-tab">
+                        <ul class="nav nav-pills justify-content-center" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="product-desc-link" data-toggle="tab" href="#product-desc-tab" role="tab" aria-controls="product-desc-tab" aria-selected="true">Description</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="product-info-link" data-toggle="tab" href="#product-info-tab" role="tab" aria-controls="product-info-tab" aria-selected="false">Additional information</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="product-shipping-link" data-toggle="tab" href="#product-shipping-tab" role="tab" aria-controls="product-shipping-tab" aria-selected="false">Shipping & Returns</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="product-review-link" data-toggle="tab" href="#product-review-tab" role="tab" aria-controls="product-review-tab" aria-selected="false">Reviews (2)</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="product-desc-tab" role="tabpanel" aria-labelledby="product-desc-link">
+                                <div class="product-desc-content">
+                                    <h3>Product Information</h3>
+                                    <p>{{DataObj.ProductDetails.FullDescription}}</p>
+                                </div><!-- End .product-desc-content -->
+                            </div><!-- .End .tab-pane -->
+                            <div class="tab-pane fade" id="product-info-tab" role="tabpanel" aria-labelledby="product-info-link">
+                                <div class="product-desc-content">
+                                    <h3>Information</h3>
+
+                                    <h3>Statics</h3>
+                                    <ul>
+                                        <li>Status : <span class="badge badge-success">Active</span></li>
+                                        <li>Bought : <span class="badge badge-primary">350</span></li>
+                                        <li>In Wishlist : <span class="badge badge-dark">150</span></li>
+                                        <li>In Cart : <span class="badge badge-primary">650</span> </li>
+                                        <li>Trending: <span class="badge badge-warning">Top</span></li>
+                                    </ul>
+                                </div><!-- End .product-desc-content -->
+                            </div><!-- .End .tab-pane -->
+                            <div class="tab-pane fade" id="product-shipping-tab" role="tabpanel" aria-labelledby="product-shipping-link">
+                                <div class="product-desc-content">
+                                    <h3>Delivery & returns</h3>
+                                    <p>We deliver to over 100 countries around the world. For full details of the delivery options we offer, please view our <a href="#">Delivery information</a><br>
+                                    We hope you’ll love every purchase, but if you ever need to return an item you can do so within a month of receipt. For full details of how to make a return, please view our <a href="#">Returns information</a></p>
+                                </div><!-- End .product-desc-content -->
+                            </div><!-- .End .tab-pane -->
+                            <div class="tab-pane fade" id="product-review-tab" role="tabpanel" aria-labelledby="product-review-link">
+                                <div class="reviews">
+                                    <h3>Reviews (2)</h3>
+                                    <div class="review">
+                                        <div class="row no-gutters">
+                                            <div class="col-auto">
+                                                <h4><a href="#">Samanta J.</a></h4>
+                                                <div class="ratings-container">
+                                                    <div class="ratings">
+                                                        <div class="ratings-val" style="width: 80%;"></div><!-- End .ratings-val -->
+                                                    </div><!-- End .ratings -->
+                                                </div><!-- End .rating-container -->
+                                                <span class="review-date">6 days ago</span>
+                                            </div><!-- End .col -->
+                                            <div class="col">
+                                                <h4>Good, perfect size</h4>
+
+                                                <div class="review-content">
+                                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus cum dolores assumenda asperiores facilis porro reprehenderit animi culpa atque blanditiis commodi perspiciatis doloremque, possimus, explicabo, autem fugit beatae quae voluptas!</p>
+                                                </div><!-- End .review-content -->
+
+                                                <div class="review-action">
+                                                    <a href="#"><i class="icon-thumbs-up"></i>Helpful (2)</a>
+                                                    <a href="#"><i class="icon-thumbs-down"></i>Unhelpful (0)</a>
+                                                </div><!-- End .review-action -->
+                                            </div><!-- End .col-auto -->
+                                        </div><!-- End .row -->
+                                    </div><!-- End .review -->
+
+                                    <div class="review">
+                                        <div class="row no-gutters">
+                                            <div class="col-auto">
+                                                <h4><a href="#">John Doe</a></h4>
+                                                <div class="ratings-container">
+                                                    <div class="ratings">
+                                                        <div class="ratings-val" style="width: 100%;"></div><!-- End .ratings-val -->
+                                                    </div><!-- End .ratings -->
+                                                </div><!-- End .rating-container -->
+                                                <span class="review-date">5 days ago</span>
+                                            </div><!-- End .col -->
+                                            <div class="col">
+                                                <h4>Very good</h4>
+
+                                                <div class="review-content">
+                                                    <p>Sed, molestias, tempore? Ex dolor esse iure hic veniam laborum blanditiis laudantium iste amet. Cum non voluptate eos enim, ab cumque nam, modi, quas iure illum repellendus, blanditiis perspiciatis beatae!</p>
+                                                </div><!-- End .review-content -->
+
+                                                <div class="review-action">
+                                                    <a href="#"><i class="icon-thumbs-up"></i>Helpful (0)</a>
+                                                    <a href="#"><i class="icon-thumbs-down"></i>Unhelpful (0)</a>
+                                                </div><!-- End .review-action -->
+                                            </div><!-- End .col-auto -->
+                                        </div><!-- End .row -->
+                                    </div><!-- End .review -->
+                                </div><!-- End .reviews -->
+                            </div><!-- .End .tab-pane -->
+                        </div><!-- End .tab-content -->
+                    </div><!-- End .product-details-tab -->
+
+                    <h2 class="title text-center mb-4">You May Also Like</h2><!-- End .title text-center -->
+
+                    <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow" data-toggle="owl" 
+                        data-owl-options='{
+                            "nav": false, 
+                            "dots": true,
+                            "margin": 20,
+                            "loop": false,
+                            "responsive": {
+                                "0": {
+                                    "items":1
+                                },
+                                "480": {
+                                    "items":2
+                                },
+                                "768": {
+                                    "items":3
+                                },
+                                "992": {
+                                    "items":4
+                                },
+                                "1200": {
+                                    "items":4,
+                                    "nav": true,
+                                    "dots": false
+                                }
+                            }
+                        }'>
+                        {{#each DataObj.productlists}}
+                        {{#if this.Top_Rated}}
+                        <div class="product product-7 text-center">
+                            <figure class="product-media">
+                                <span class="product-label label-new">Top</span>
+                                <a href="product.html">
+                                    <img src="assets/img/products/{{this._id}}/{{this._id}}1.jpg" alt="Product image" class="product-image-topRated">
+                                </a>
+
+                                <div class="product-action">
+                                    <a href="#" class="btn-product btn-wishlist"><span>add to Wishlist</span></a>
+                                </div><!-- End .product-action -->
+                            </figure><!-- End .product-media -->
+
+                            <div class="product-body">
+                                <div class="product-cat">
+                                    <a href="#">{{this.MainCategory}}</a>
+                                    <a href="#">{{this.SubCategory}}</a>
+                                </div><!-- End .product-cat -->
+                                <h3 class="product-title"><a href="#">{{this.ProductName}}</a></h3><!-- End .product-title -->
+                                <div class="product-price">
+                                       <small><strike>₹{{this.MRP}}</strike></small>  <span><strong> ₹<span>{{this.ProductPrice}}</span></strong></span>
+                                </div><!-- End .product-price -->
+                                <div class="ratings-container">
+                                    <div class="ratings">
+                                        <div class="ratings-val" style="width: 20%;"></div><!-- End .ratings-val -->
+                                    </div><!-- End .ratings -->
+                                    <span class="ratings-text">( 2 Reviews )</span>
+                                </div><!-- End .rating-container -->
+                            </div><!-- End .product-body -->
+                        </div><!-- End .product -->
+                            {{/if}}
+                            {{/each}}
+                    </div><!-- End .owl-carousel -->
+                </div><!-- End .container -->
+            </div><!-- End .page-content -->
+        </main><!-- End .main -->
+        {{>user-footer}}
+    </div><!-- End .page-wrapper -->
+    <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+    <!-- Sticky Bar -->
+    <div class="sticky-bar">
+        <div class="container">
+           
+        </div><!-- End .container -->
+    </div><!-- End .sticky-bar -->
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
+
+    {{>mobile-menu}}
+
+    <!-- Sign in / Register Modal -->
+    <div class="modal fade" id="signin-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="icon-close"></i></span>
+                    </button>
+
+                    <div class="form-box">
+                        <div class="form-tab">
+                            <ul class="nav nav-pills nav-fill" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="signin-tab" data-toggle="tab" href="#signin" role="tab" aria-controls="signin" aria-selected="true">Sign In</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="register-tab" data-toggle="tab" href="#register" role="tab" aria-controls="register" aria-selected="false">Register</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="tab-content-5">
+                                <div class="tab-pane fade show active" id="signin" role="tabpanel" aria-labelledby="signin-tab">
+                                    <form action="#">
+                                        <div class="form-group">
+                                            <label for="singin-email">Username or email address *</label>
+                                            <input type="text" class="form-control" id="singin-email" name="singin-email" required>
+                                        </div><!-- End .form-group -->
+
+                                        <div class="form-group">
+                                            <label for="singin-password">Password *</label>
+                                            <input type="password" class="form-control" id="singin-password" name="singin-password" required>
+                                        </div><!-- End .form-group -->
+
+                                        <div class="form-footer">
+                                            <button type="submit" class="btn btn-outline-primary-2">
+                                                <span>LOG IN</span>
+                                                <i class="icon-long-arrow-right"></i>
+                                            </button>
+
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="signin-remember">
+                                                <label class="custom-control-label" for="signin-remember">Remember Me</label>
+                                            </div><!-- End .custom-checkbox -->
+
+                                            <a href="#" class="forgot-link">Forgot Your Password?</a>
+                                        </div><!-- End .form-footer -->
+                                    </form>
+                                    <div class="form-choice">
+                                        <p class="text-center">or sign in with</p>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <a href="#" class="btn btn-login btn-g">
+                                                    <i class="icon-google"></i>
+                                                    Login With Google
+                                                </a>
+                                            </div><!-- End .col-6 -->
+                                            <div class="col-sm-6">
+                                                <a href="#" class="btn btn-login btn-f">
+                                                    <i class="icon-facebook-f"></i>
+                                                    Login With Facebook
+                                                </a>
+                                            </div><!-- End .col-6 -->
+                                        </div><!-- End .row -->
+                                    </div><!-- End .form-choice -->
+                                </div><!-- .End .tab-pane -->
+                                <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
+                                    <form action="#">
+                                        <div class="form-group">
+                                            <label for="register-email">Your email address *</label>
+                                            <input type="email" class="form-control" id="register-email" name="register-email" required>
+                                        </div><!-- End .form-group -->
+
+                                        <div class="form-group">
+                                            <label for="register-password">Password *</label>
+                                            <input type="password" class="form-control" id="register-password" name="register-password" required>
+                                        </div><!-- End .form-group -->
+
+                                        <div class="form-footer">
+                                            <button type="submit" class="btn btn-outline-primary-2">
+                                                <span>SIGN UP</span>
+                                                <i class="icon-long-arrow-right"></i>
+                                            </button>
+
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="register-policy" required>
+                                                <label class="custom-control-label" for="register-policy">I agree to the <a href="#">privacy policy</a> *</label>
+                                            </div><!-- End .custom-checkbox -->
+                                        </div><!-- End .form-footer -->
+                                    </form>
+                                    <div class="form-choice">
+                                        <p class="text-center">or sign in with</p>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <a href="#" class="btn btn-login btn-g">
+                                                    <i class="icon-google"></i>
+                                                    Login With Google
+                                                </a>
+                                            </div><!-- End .col-6 -->
+                                            <div class="col-sm-6">
+                                                <a href="#" class="btn btn-login  btn-f">
+                                                    <i class="icon-facebook-f"></i>
+                                                    Login With Facebook
+                                                </a>
+                                            </div><!-- End .col-6 -->
+                                        </div><!-- End .row -->
+                                    </div><!-- End .form-choice -->
+                                </div><!-- .End .tab-pane -->
+                            </div><!-- End .tab-content -->
+                        </div><!-- End .form-tab -->
+                    </div><!-- End .form-box -->
+                </div><!-- End .modal-body -->
+            </div><!-- End .modal-content -->
+        </div><!-- End .modal-dialog -->
+    </div><!-- End .modal -->
+

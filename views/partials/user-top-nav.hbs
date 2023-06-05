@@ -1,0 +1,164 @@
+<header class="header">
+  <div class="header-top">
+    <div class="container">
+      <div class="header-left">
+        <div class="header-dropdown">
+          <a href="#">Usd</a>
+          <div class="header-menu">
+            <ul>
+              <li><a href="#">Eur</a></li>
+              <li><a href="#">Usd</a></li>
+            </ul>
+          </div><!-- End .header-menu -->
+        </div><!-- End .header-dropdown -->
+
+        <div class="header-dropdown">
+          <a href="#">Eng</a>
+          <div class="header-menu">
+            <ul>
+              <li><a href="#">English</a></li>
+              <li><a href="#">French</a></li>
+              <li><a href="#">Spanish</a></li>
+
+            </ul>
+          </div><!-- End .header-menu -->
+        </div><!-- End .header-dropdown -->
+
+      </div><!-- End .header-left -->
+
+      <div class="header-right">
+        <ul class="top-menu">
+          <ul>
+            {{#if DataObj.User}}<p class="text-danger">Welcome
+                {{DataObj.User.register_Full_Name}}</p>{{/if}}
+            <li class="ml-4"><a href="tel:#"><i class="icon-phone"></i>Call:
+                +0123 456 789</a></li>
+            <li><a href="/about">About Us</a></li>
+            <li><a href="/contact">Contact Us</a></li>
+          </ul>
+        </ul><!-- End .top-menu -->
+      </div><!-- End .header-right -->
+    </div><!-- End .container -->
+  </div><!-- End .header-top -->
+
+  <div class="header-middle sticky-header">
+    <div class="container">
+      <div class="header-left">
+        <button class="mobile-menu-toggler">
+          <span class="sr-only">Toggle mobile menu</span>
+          <i class="icon-bars"></i>
+        </button>
+        <a href="/" class="logo">
+          <img
+            src="user/assets/images/logo.png"
+            alt="Molla Logo"
+            width="105"
+            height="25"
+          />
+        </a>
+
+        <nav class="main-nav">
+          <ul class="menu sf-arrows">
+            <li class="megamenu-container active">
+              <a href="/">Home</a>
+            </li>
+            <li>
+              <a href="/mainCategories">Categories</a>
+            </li>
+            <li>
+              <a href="#" class="sf-with-ul">Product</a>
+
+              <div class="megamenu megamenu-sm">
+                <div class="row no-gutters">
+                  <div class="col-md-6">
+                    <div class="menu-col">
+                      <div class="menu-title">Product Details</div><!-- End .menu-title -->
+                      <ul>
+                        <li><a href="/allProducts">All</a></li>
+                        <li><a href="product.html">Men</a></li>
+                        <li><a href="product-centered.html">Women</a></li>
+                        <li><a href="product-extended.html"><span>Boys<span
+                                class="tip tip-new"
+                              >New</span></span></a></li>
+                        <li><a href="product-gallery.html">Girls</a></li>
+                        <li><a href="product-sticky.html">Universal</a></li>
+                        <li><a href="product-sidebar.html">Others</a></li>
+                      </ul>
+                    </div><!-- End .menu-col -->
+                  </div><!-- End .col-md-6 -->
+
+                  <div class="col-md-6">
+                    <div class="banner banner-overlay">
+                      <a href="category.html">
+                        <img
+                          src="user/assets/images/menu/banner-2.jpg"
+                          alt="Banner"
+                        />
+
+                        <div class="banner-content banner-content-bottom">
+                          <div class="banner-title text-white">New Trends<br
+                            /><span><strong>spring 2019</strong></span></div><!-- End .banner-title -->
+                        </div><!-- End .banner-content -->
+                      </a>
+                    </div><!-- End .banner -->
+                  </div><!-- End .col-md-6 -->
+                </div><!-- End .row -->
+              </div><!-- End .megamenu megamenu-sm -->
+            </li>
+
+          </ul><!-- End .menu -->
+        </nav><!-- End .main-nav -->
+      </div><!-- End .header-left -->
+
+      <div class="header-right">
+        <div class="header-search">
+          <a href="#" class="search-toggle" role="button" title="Search"><i
+              class="icon-search"
+            ></i></a>
+          <form action="#" method="get">
+            <div class="header-search-wrapper">
+              <label for="q" class="sr-only">Search</label>
+              <input
+                type="search"
+                class="form-control"
+                name="q"
+                id="q"
+                placeholder="Search in..."
+                required
+              />
+            </div><!-- End .header-search-wrapper -->
+          </form>
+        </div><!-- End .header-search -->
+        {{#if DataObj.User}}
+          <div class="cart-dropdown">
+            <a href="/dashboard" class="dropdown-toggle">
+              <i class="icon-user" title="Account"></i>
+            </a>
+          </div><!-- End .cart-dropdown -->
+        {{else}}
+          <div class="cart-dropdown">
+            <a href="/login" class="dropdown-toggle">
+              <p>Login</p>
+            </a>
+          </div><!-- End .cart-dropdown -->
+        {{/if}}
+        <div class="cart-dropdown">
+          <a href="/wishlist" class="dropdown-toggle">
+            <i class="icon-heart-o wishlist" title="wishlist"></i><sup><span
+                class="cart-count"
+              >3</span></sup>
+          </a>
+        </div><!-- End .cart-dropdown -->
+        <div class="dropdown cart-dropdown">
+          <a href="/cart" class="dropdown-toggle">
+            <i class="icon-shopping-cart" title="Cart"></i><sup><span
+                class="cart-count"
+              >{{DataObj.CartCount}}</span></sup>
+
+          </a>
+        </div><!-- End .cart-dropdown -->
+
+      </div><!-- End .header-right -->
+    </div><!-- End .container -->
+  </div><!-- End .header-middle -->
+</header><!-- End .header -->

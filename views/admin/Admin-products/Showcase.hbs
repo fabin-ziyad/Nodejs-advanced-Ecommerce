@@ -1,0 +1,563 @@
+	<div class="wrapper">
+		<!-- LEFT MAIN SIDEBAR -->
+		{{>admin-side-nav}}
+		<!--  PAGE WRAPPER -->
+		<div class="ec-page-wrapper">
+			<!-- Header -->
+			{{>admin-top-nav}}
+			<!-- CONTENT WRAPPER -->
+			<div class="ec-content-wrapper">
+				<div class="content">
+					<div class="breadcrumb-wrapper d-flex align-items-center justify-content-between">
+						<div>
+							<h1>Product</h1>
+							<p class="breadcrumbs"><span><a href="/admin/">Home</a></span>
+								<span><i class="mdi mdi-chevron-right"></i></span>Show Case</p>
+						</div>
+						
+					</div>
+					<div class="row">
+						<div class="col-12">
+							<div class="card card-default">
+								<div class="card-body">
+									<h4 class="text-muted text-center m-2">All Products</h4>
+									<div class="table-responsive">
+										<table id="responsive-data-table" class="table"
+											style="width:100%">
+											<thead>
+												<tr>
+													<th id="Arrivalcol">Arrivals</th>
+													<th>Product</th>
+													<th>Name</th>
+													<th>Top Rated</th>
+													<th>Action</th>
+													<th>Feature</th>
+												</tr>
+											</thead>
+											<tbody>
+                                      		{{#each productlists}}
+									    	{{#if this.Status}}
+											{{#unless this.New_Arrival}}
+											{{#unless this.Featured}}
+											{{#unless this.Top_Rated}}
+											<tr>
+												<td id="Arrivalrow">
+													<label class="switch mt-2">
+													<input type="checkbox"  id="Arrival{{this._id}}" class="ARRIVAL_OFF" onchange="ArrivalStatus('{{this._id}}')">
+													<span class="slider round"></span>
+												</td>
+												<td>
+													<img class="tbl-thumb" src="/assets/img/products/{{this._id}}/{{this._id}}1.jpg" alt="Product Image" style="width: 60px;height:58px" />
+												</td>
+												<td>
+													{{this.ProductName}}
+												</td>
+												<td>
+													<label class="switch mt-2">
+													<input type="checkbox" name="" id="TopRate{{this._id}}" onchange="TopRateStatus('{{this._id}}')">
+													<span class="slider round"></span>
+												</td>
+												<td>
+													<div class="btn-group">
+														<a href="javascript:0" type="button"
+														class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#info{{this._id}}">Info</a>
+													</div>
+												</td>
+												<td>
+													<label class="switch mt-2">
+													<input type="checkbox" name="" id="Featured{{this._id}}" onchange="FeatureStatus('{{this._id}}')">
+													<span class="slider round"></span>
+												</td>
+											</tr>
+												<!-- Category Modal -->
+		 										<div class="modal fade modal-contact-detail" id="info{{this._id}}" tabindex="-1" aria-hidden="true">
+													<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+														<div class="modal-content">
+															<div class="modal-header justify-content-end border-bottom-0">
+																<div class="dropdown">
+																	<button class="btn-dots-icon" type="button" id="dropdownMenuButton"	data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+																	</button>
+																</div>
+																<button type="button" class="btn-close-icon" data-bs-dismiss="modal"	aria-label="Close">
+																<i class="mdi mdi-close"></i>
+																</button>	
+															</div>
+															<div class="modal-body pt-0">
+																<div class="row no-gutters">
+																	<div class="col-md-6">
+																		<div class="profile-content-left px-4">
+																			<div class="text-center widget-profile px-0 border-0">
+																				<div class="card-img mx-auto rounded-circle">
+																					<img src="/assets/img/products/{{this._id}}/{{this._id}}1.jpg" alt="user image">
+																				</div>		
+																				<div class="card-body">
+																					<h4 class="py-2 text-dark">{{this.ProductName}}</h4>
+																				</div>
+																			</div>								
+																		</div>								
+																		<div class="profile-content-left px-4">
+																			<div class="d-flex justify-content-between ">
+																				<div class="text-center pb-4">
+																					<p class="text-dark pb-2">Quantity</p>
+																					<h6 class="text-dark pb-2">{{this.ProductQuantity}}</h6>
+																				</div>
+																				<div class="text-center pb-4">
+																					<p>Status</p>
+																					{{#if this.Status}}
+																					<span class="badge badge-success">Active</span>
+																					{{else}}
+																					<span class="badge badge-danger">Inactive</span>
+																					{{/if}}
+																				</div>
+																				<div class="text-center pb-4">
+																					<p>Price</p>
+																					<h6 class="text-dark pb-2">{{this.ProductPrice}}</h6>
+																				</div>
+																			</div>
+																		</div>	
+																	</div>
+																	<div class="col-md-6">
+																		<div class="contact-info px-4">
+																			<h4 class="text-dark mb-1">Detailed Informations</h4>
+																			<div class="d-flex justify-content-between ">
+																				<div class="text-center pb-4">
+																					<p class="text-dark pb-2">Main Category</p>
+																					<h6 class="badge badge-dark pb-2">{{this.MainCategory}}</h6>
+																				</div>
+																				<div class="text-center pb-4">
+																					<p>Sub Category</p>
+																					<h6 class="badge badge-success pb-2">{{this.SubCategory}}</h6>
+																				</div>		
+																			</div>
+																			<p class="text-dark font-weight-medium mt-3 mb-2">Size:<span class="ec-subcat-popup">{{this.ProductSize}}</span></p>
+																			<h6>Trending: <span class="badge badge-success mt-5">Top</span></h6>	
+																			<div class="row mt-3">
+																			    <div class="btn-group">
+																					<a href="/admin/Product-View?id={{this._id}}"	class="btn btn-outline-primary">More</a>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											</div>
+											{{/unless}}
+									    	{{/unless}}
+											{{/unless}}
+											{{/if}}
+											{{/each}}
+											</tbody>
+										</table>
+									</div>
+								</div>			
+							</div>
+						</div>
+					</div>
+					<div class="row mt-3">
+						<div class="col-12">
+							<div class="card card-default">
+								<div class="card-body">
+									<small style="color:red"> * Max Limit is 8 Product</small>
+									<h4 class="text-muted text-center m-4">NEW ARRIVALS</h4>
+									<div class="table-responsive">
+										<table id="responsive-data-table1" class="table"
+											style="width:100%">
+											<thead>
+												<tr>
+													<th>Product</th>
+													<th>Name</th>
+													<th>Action</th>
+													<th>New Arrivals</th>
+												</tr>
+											</thead>
+											<tbody>
+                                       				 {{#each productlists}}
+									    			 {{#if this.New_Arrival}}
+													<tr>
+														<td>
+															<img class="tbl-thumb" src="/assets/img/products/{{this._id}}/{{this._id}}1.jpg" alt="Product Image" style="width: 60px;height:58px" />
+														</td>
+													<td>
+														{{this.ProductName}}
+													</td>
+													<td>
+														<div class="btn-group">
+															<a href="javascript:0" type="button"
+															class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#info{{this._id}}">Info</a>
+														</div>
+													</td>
+													<td >
+														<label class="switch mt-2">
+														<input type="checkbox" name="" id="Arrival{{this._id}}" class="ARRIVAL_ON" onchange="ArrivalStatus('{{this._id}}')" checked>
+														<span class="slider round"></span>
+													</td>
+												</tr>
+												<div class="modal fade modal-contact-detail" id="info{{this._id}}" tabindex="-1" aria-hidden="true">
+													<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+														<div class="modal-content">
+															<div class="modal-header justify-content-end border-bottom-0">
+																<div class="dropdown">
+																	<button class="btn-dots-icon" type="button" id="dropdownMenuButton"	data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+																	</button>
+																</div>
+																<button type="button" class="btn-close-icon" data-bs-dismiss="modal"	aria-label="Close">
+																<i class="mdi mdi-close"></i>
+																</button>
+									
+															</div>
+															<div class="modal-body pt-0">
+																<div class="row no-gutters">
+																	<div class="col-md-6">
+																		<div class="profile-content-left px-4">
+																			<div class="text-center widget-profile px-0 border-0">
+																				<div class="card-img mx-auto rounded-circle">
+																					<img src="/assets/img/products/{{this._id}}/{{this._id}}1.jpg" alt="user image">
+																				</div>
+																				<div class="card-body">
+																				<h4 class="py-2 text-dark">{{this.ProductName}}</h4>
+																				</div>
+																			</div>
+																		</div>			
+																		<div class="profile-content-left px-4">
+																			<div class="d-flex justify-content-between ">
+																				<div class="text-center pb-4">
+																					<p class="text-dark pb-2">Quantity</p>
+																					<h6 class="text-dark pb-2">{{this.ProductQuantity}}</h6>
+																				</div>
+																				<div class="text-center pb-4">
+																						<p>Status</p>
+																						{{#if this.Status}}
+																						<span class="badge badge-success">Active</span>
+																						{{else}}
+																						<span class="badge badge-danger">Inactive</span>
+																						{{/if}}
+																				</div>
+																				<div class="text-center pb-4">
+																					<p>Price</p>
+																					<h6 class="text-dark pb-2">{{this.ProductPrice}}</h6>
+																				</div>
+																			</div>
+																		</div>	
+																	</div>
+																	<div class="col-md-6">
+																		<div class="contact-info px-4">
+																			<h4 class="text-dark mb-1">Detailed Informations</h4>
+																			<div class="d-flex justify-content-between ">
+																				<div class="text-center pb-4">
+																					<p class="text-dark pb-2">Main Category</p>
+																						<h6 class="badge badge-dark pb-2">{{this.MainCategory}}</h6>
+																				</div>
+																				<div class="text-center pb-4">
+																					<p>Sub Category</p>
+																					<h6 class="badge badge-success pb-2">{{this.SubCategory}}</h6>
+																				</div>
+																			</div>
+																				<p class="text-dark font-weight-medium mt-3 mb-2">Size:<span class="ec-subcat-popup">{{this.ProductSize}}</span></p>
+																				<h6>Trending: <span class="badge badge-success mt-5">Top</span></h6>	
+																			<div class="row mt-3">
+																			    <div class="btn-group">
+																					<a href="/admin/Product-View?id={{this._id}}"	class="btn btn-outline-primary">More</a>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												{{/if}}
+												{{/each}}
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row mt-3">
+						<div class="col-12">
+							<div class="card card-default"  id="card3">
+								<div class="card-body">
+									<small style="color:red"> * Max Limit is 4 Product</small>
+									<h4 class="text-muted text-center m-4">Featured</h4>
+									<div class="table-responsive">
+										<table id="responsive-data-table2" class="table"
+											style="width:100%">
+											<thead>
+												<tr>
+													<th>Product</th>
+													<th>Name</th>
+													<th>Action</th>
+													<th>Featured</th>
+												</tr>
+											</thead>
+											<tbody>
+                                    		    	{{#each productlists}}
+									    			{{#if this.Featured}}
+												<tr>
+													<td>
+														<img class="tbl-thumb" src="/assets/img/products/{{this._id}}/{{this._id}}1.jpg" alt="Product Image" style="width: 60px;height:58px" />
+													</td>
+													<td>
+														{{this.ProductName}}
+													</td>
+													<td>
+														<div class="btn-group">
+															<a href="javascript:0" type="button"
+															class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#info{{this._id}}">Info</a>
+														</div>	
+													</td>
+													<td >
+														<label class="switch mt-2">
+														<input type="checkbox" name="" id="Featured{{this._id}}" class="FEATURE_ON" onchange="FeatureStatus('{{this._id}}')" checked>
+														<span class="slider round"></span>
+													</td>
+												</tr>
+												<div class="modal fade modal-contact-detail" id="info{{this._id}}" tabindex="-1" aria-hidden="true">
+													<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+														<div class="modal-content">
+															<div class="modal-header justify-content-end border-bottom-0">
+																<div class="dropdown">
+																	<button class="btn-dots-icon" type="button" id="dropdownMenuButton"	data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+																	</button>
+																</div>
+																<button type="button" class="btn-close-icon" data-bs-dismiss="modal" aria-label="Close">
+																<i class="mdi mdi-close"></i>
+																</button>
+															</div>
+															<div class="modal-body pt-0">
+																<div class="row no-gutters">
+																	<div class="col-md-6">
+																		<div class="profile-content-left px-4">
+																			<div class="text-center widget-profile px-0 border-0">
+																				<div class="card-img mx-auto rounded-circle">
+																					<img src="/assets/img/products/{{this._id}}/{{this._id}}1.jpg" alt="user image">
+																				</div>			
+																				<div class="card-body">
+																					<h4 class="py-2 text-dark">{{this.ProductName}}</h4>
+																				</div>
+																			</div>											
+																		</div>					
+																		<div class="profile-content-left px-4">
+																			<div class="d-flex justify-content-between ">
+																				<div class="text-center pb-4">
+																					<p class="text-dark pb-2">Quantity</p>
+																					<h6 class="text-dark pb-2">{{this.ProductQuantity}}</h6>
+																				</div>
+																				<div class="text-center pb-4">
+																					<p>Status</p>
+																					{{#if this.Status}}
+																					<span class="badge badge-success">Active</span>
+																					{{else}}
+																					<span class="badge badge-danger">Inactive</span>
+																					{{/if}}
+																				</div>
+																				<div class="text-center pb-4">
+																					<p>Price</p>
+																					<h6 class="text-dark pb-2">{{this.ProductPrice}}</h6>
+																				</div>
+																			</div>
+																		</div>	
+																	</div>
+																	<div class="col-md-6">
+																		<div class="contact-info px-4">
+																			<h4 class="text-dark mb-1">Detailed Informations</h4>
+																				<div class="d-flex justify-content-between ">
+																					<div class="text-center pb-4">
+																						<p class="text-dark pb-2">Main Category</p>
+																						<h6 class="badge badge-dark pb-2">{{this.MainCategory}}</h6>
+																					</div>
+																				<div class="text-center pb-4">
+																					<p>Sub Category</p>
+																					<h6 class="badge badge-success pb-2">{{this.SubCategory}}</h6>
+																				</div>		
+																		</div>
+																		<p class="text-dark font-weight-medium mt-3 mb-2">Size:<span class="ec-subcat-popup">{{this.ProductSize}}</span></p>
+																		<h6>Trending: <span class="badge badge-success mt-5">Top</span></h6>	
+																		<div class="row mt-3">
+																		    <div class="btn-group">
+																				<a href="/admin/Product-View?id={{this._id}}"	class="btn btn-outline-primary">More</a>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												{{/if}}
+												{{/each}}
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row mt-3">
+						<div class="col-12">
+							<div class="card card-default">
+								<div class="card-body">
+									<small style="color:red"> * Max Limit is 3 Product</small>
+									<h4 class="text-muted text-center m-4">Top Rated</h4>
+									<div class="table-responsive">
+										<table id="responsive-data-table3" class="table" style="width:100%">
+											<thead>
+												<tr>
+													<th>Product</th>
+													<th>Name</th>
+													<th>Action</th>
+													<th>Top Rated</th>
+												</tr>
+											</thead>
+											<tbody>
+                  		      	                {{#each productlists}}
+										    	{{#if this.Top_Rated}}
+												<tr>
+													<td><img class="tbl-thumb" src="/assets/img/products/{{this._id}}/{{this._id}}1.jpg" alt="Product Image" style="width: 60px;height:58px" /></td>
+													<td>{{this.ProductName}}</td>
+													<td>
+														<div class="btn-group">
+															<a href="javascript:0" type="button"
+															class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#info{{this._id}}">Info</a>
+														</div>
+													</td>
+													<td >
+														<label class="switch mt-2">
+														<input type="checkbox" name="" id="TopRate{{this._id}}" class="TOPRATE_ON" onchange="TopRateStatus('{{this._id}}')" checked>
+														<span class="slider round"></span>
+													</td>
+												</tr>
+												<div class="modal fade modal-contact-detail" id="info{{this._id}}" tabindex="-1" aria-hidden="true">
+													<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+														<div class="modal-content">
+															<div class="modal-header justify-content-end border-bottom-0">
+																<div class="dropdown">
+																	<button class="btn-dots-icon" type="button" id="dropdownMenuButton"
+																	data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+																	</button>
+																</div>
+																<button type="button" class="btn-close-icon" data-bs-dismiss="modal"
+																aria-label="Close">
+																<i class="mdi mdi-close"></i>
+																</button>
+															</div>
+															<div class="modal-body pt-0">
+																<div class="row no-gutters">
+																	<div class="col-md-6">
+																		<div class="profile-content-left px-4">
+																			<div class="text-center widget-profile px-0 border-0">
+																				<div class="card-img mx-auto rounded-circle">
+																					<img src="/assets/img/products/{{this._id}}/{{this._id}}1.jpg" alt="user image">
+																				</div>
+																				<div class="card-body">
+																					<h4 class="py-2 text-dark">{{this.ProductName}}</h4>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="profile-content-left px-4">
+																			<div class="d-flex justify-content-between ">
+																				<div class="text-center pb-4">
+																					<p class="text-dark pb-2">Quantity</p>
+																					<h6 class="text-dark pb-2">{{this.ProductQuantity}}</h6>
+																				</div>
+																				<div class="text-center pb-4">
+																					<p>Status</p>
+																					{{#if this.Status}}
+																					<span class="badge badge-success">Active</span>
+																					{{else}}
+																					<span class="badge badge-danger">Inactive</span>
+																					{{/if}}
+																				</div>
+																				<div class="text-center pb-4">
+																					<p>Price</p>
+																					<h6 class="text-dark pb-2">{{this.ProductPrice}}</h6>
+																				</div>
+																			</div>
+																		</div>	
+																	</div>
+																	<div class="col-md-6">
+																		<div class="contact-info px-4">
+																			<h4 class="text-dark mb-1">Detailed Informations</h4>
+																			<div class="d-flex justify-content-between ">
+																				<div class="text-center pb-4">
+																					<p class="text-dark pb-2">Main Category</p>
+																					<h6 class="badge badge-dark pb-2">{{this.MainCategory}}</h6>
+																				</div>
+																				<div class="text-center pb-4">
+																					<p>Sub Category</p>
+																					<h6 class="badge badge-success pb-2">{{this.SubCategory}}</h6>
+																				</div>
+																			</div>
+																			<p class="text-dark font-weight-medium mt-3 mb-2">Size:<span class="ec-subcat-popup">{{this.ProductSize}}</span></p>
+																			<h6>Trending: <span class="badge badge-success mt-5">Top</span></h6>	
+																			<div class="row mt-3">
+																				<div class="btn-group">
+																					<a href="/admin/Product-View?id={{this._id}}"
+																					class="btn btn-outline-primary">More</a>
+																				</div>
+																			</div>
+																		</div>
+														     		</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												{{/if}}
+												{{/each}}
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>	
+				</div> <!-- End Content -->
+			</div> <!-- End Content Wrapper -->
+			<!-- Footer -->
+			<footer class="footer mt-auto">
+				<div class="copyright bg-white">
+					<p>
+					Copyright &copy; <span id="ec-year"></span><a class="text-primary"
+					href="https://themeforest.net/user/ashishmaraviya" target="_blank">Admin Dashboard</a>. All Rights Reserved.
+					 </p>
+				</div>
+			</footer>
+		</div>
+        <!-- End Page Wrapper -->
+	   </div> 
+   		 <!-- End content Wrapper -->
+    </div>
+	<script>
+	function FilterSubCat(value){
+		let CatDetails=[
+		{{#each AllMainCat}}
+		{
+		  MainCategory:'{{this._id}}',
+		  SubCategory:[{{#each this.SubCategoryName}},'{{this}}'{{/each}}],
+		  SubCatId:[{{#each this.SubCatId}},'{{this}}'{{/each}}],
+		},
+		{{/each}}	
+		]
+		
+		if(value.length==0)document.getElementById('SubCategories').innerHTML='<option value=""> Select sub category </option>';
+		else{
+			let subCatIndex;
+			for(let key in CatDetails){
+				if(CatDetails[key].MainCategory==value){
+				   subCatIndex=key
+				}
+			}
+			 var SubCatOption = "";
+                for (subCat in CatDetails[subCatIndex].SubCategory) {
+                    SubCatOption += "<option value='" + CatDetails[subCatIndex].SubCatId[subCat] + "'>" + CatDetails[subCatIndex].SubCategory[subCat] + "</option>";
+                }
+                document.getElementById('SubCategories').innerHTML = SubCatOption;
+		    }
+	    }
+	</script>

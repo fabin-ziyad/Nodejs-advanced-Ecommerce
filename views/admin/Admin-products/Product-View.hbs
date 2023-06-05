@@ -1,0 +1,193 @@
+    <div class="wrapper">
+		<!-- LEFT MAIN SIDEBAR -->
+		{{>admin-side-nav}}
+		<!--  PAGE WRAPPER -->
+		<div class="ec-page-wrapper">
+			<!-- Header -->
+			{{>admin-top-nav}}
+             <!-- CONTENT WRAPPER -->
+			<div class="ec-content-wrapper">
+				<div class="content">
+					<div class="breadcrumb-wrapper breadcrumb-wrapper-2">
+						<h1>Product Detailed</h1>
+						<p class="breadcrumbs"><span><a href="/admin/">Home</a></span>
+							<span><i class="mdi mdi-chevron-right"></i></span>Product Detailed
+						</p>
+					</div>
+                    <div class="page-content">
+                        <div class="container">
+                            <div class="product-details-top">
+                                <div class="row">
+                                    <div class="col-md-12">                 
+                                        <div class="row" id="img-previews">
+                                            <div class="col-md-3">
+                                                 <img  class="img-fluid" id="product-zoom" src="/assets/img/products/{{DetailedProduct._id}}/{{DetailedProduct._id}}1.jpg" alt="image1">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <img class="img-fluid" src="/assets/img/products/{{DetailedProduct._id}}/{{DetailedProduct._id}}2.jpg" alt="image2"> 
+                                            </div>   
+                                            <div class="col-md-3">
+                                                <img class="img-fluid" src="/assets/img/products/{{DetailedProduct._id}}/{{DetailedProduct._id}}3.jpg" alt="image3">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <img class="img-fluid" src="/assets/img/products/{{DetailedProduct._id}}/{{DetailedProduct._id}}4.jpg" alt="image4">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="product-details " id="basic-specs">
+                                                 <h1 class="product-title text-center">{{DetailedProduct.ProductName}}</h1>
+                                                    <div class="ratings-container mt-2">
+                                                        <div class="ratings">
+                                                           <div class="ratings-val" style="width: 80%;"></div>
+                                                        </div>
+                                                        <a class="ratings-text" href="#product-review-link" id="review-link">{{DetailedProduct.BrandName}}</a>
+                                                    </div><!-- End .rating-container -->
+                                                    <div class="product-price mt-3">
+                                                <h4 class="text-bold" class="pricing">&#8377<strong>{{DetailedProduct.ProductPrice}}</strong> <span><small>&#8377<strike>{{DetailedProduct.MRP}}</strike></small> </span></h4>
+                                            </div><!-- End .product-price -->
+                                            <div class="row">
+                                                <div class="col-md-6 col-xs-6 col-sm-6">
+                                                    <div class="details-filter-row details-row-size mt-3">
+                                                        <p>Colors: <span>
+                                                        {{#each DetailedProduct.Colors}}
+                                                        <label class="product-colors-span">{{this}}</label>
+                                                        {{/each}}
+                                                        </span> </p>
+                                                    </div><!-- End .details-filter-row -->
+                                                </div>
+                                                <div class="col-md-6 col-xs-6 col-sm-6">
+                                                    <div class="details-filter-row details-row-size mt-3">
+                                                     <p>Sizes: <span>
+                                                      {{#each DetailedProduct.ProductSize}}
+                                                      <label class="product-colors-span">{{this}}</label>
+                                                       {{/each}}
+                                                        </span> </p>
+                                                    </div><!-- End .details-filter-row --> 
+                                                </div>
+                                            </div>
+                                            <div class="details-filter-row details-row-size mt-3">
+                                               <label for="qty"><h5>Qty: <b>{{DetailedProduct.ProductQuantity}}</b></h5></label>      
+                                            </div><!-- End .details-filter-row -->
+                                            <div class="product-details-footer">
+                                                <div class="row mt-2">
+                                                    <div class="col-md-6 col-s-12">
+                                                        <div class="product-cat">
+                                                             <p>Category:<span>
+                                                                <label class="product-colors-span">{{DetailedProduct.MainCategory}}</label>
+                                                             </span></p>
+                                                        </div><!-- End .product-cat -->
+                                                    </div>
+                                                    <div class="col-md-6 col-s-12 mt-3">
+                                                        <div class="product-cat">
+                                                         <p>Sub Category:<span>
+                                                           <label class="product-colors-span">{{DetailedProduct.SubCategory}}</label>
+                                                           </span></p>
+                                                        </div><!-- End .product-cat -->
+                                                    </div>
+                                                </div>
+                                            </div><!-- End .product-details-footer -->
+                                        </div><!-- End .product-details -->
+                                    </div><!-- End .row -->
+                                </div><!-- End .col-md-6 -->
+                            </div><!-- End .row -->
+                        </div>
+                        <div class="product-details-tab">
+                            <ul class="nav nav-pills justify-content-center" role="tablist">
+                                    <li class="nav-item mt-2">
+                                     <a class=" itsActive mr-3" id="ShortDescBtn" href="javascript:ShortDesc()">Short Description</a>
+                                    </li>
+                                    <li class="nav-item mt-2">
+                                       <a class=" mr-3" id="FullDescBtn"  href="javascript:FullDesc()">Full Description</a>
+                                    </li>
+                                    <li class="nav-item mt-2">
+                                        <a class=" mr-3" id="product-review-link" data-toggle="tab" href="#product-review-tab" role="tab" aria-controls="product-review-tab" aria-selected="false">Reviews (2)</a>
+                                    </li>
+                            </ul>
+                            <div class="tab-content">
+                             <div class="tab-pane fade show " id="ShortDesc" style="display: block;">
+                                <div class="product-desc-content text-center mt-5">
+                                    <h3>Product Information</h3>
+                                    <textarea  class="form-control shortdescTextArea"  rows="5" readOnly required>{{DetailedProduct.ShortDescription}}</textarea>
+                                </div><!-- End .product-desc-content -->
+                            </div><!-- .End .tab-pane -->
+
+                            <div class="tab-pane fade show " id="FullDesc">
+                                <div class="product-desc-content text-center mt-5">
+                                    <h3>Full Information</h3>
+                            <textarea  class="form-control fulldescTextArea"  rows="8" readOnly required>{{DetailedProduct.FullDescription}}</textarea>
+                                </div><!-- End .product-desc-content -->
+                            </div><!-- .End .tab-pane -->
+                        </div><!-- End .tab-content -->
+                    </div><!-- End .product-details-tab -->
+            </div><!-- End .page-content -->
+        </main><!-- End .main -->
+        </div>
+            </div></div>
+            <hr class="product-hr">
+            <div class="product-statics bg-dark">
+                <div class="product-details-top">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="product-details" id="basic-specs">
+                                            <div class="product-price mt-3">
+                                                <u><h4 class="text-bold text-center" class="pricing"> Statics</h4></u>
+                                            </div><!-- End .product-price -->
+
+                                            <div class="row">
+                                                <div class="col-md-6 col-xs-6 col-sm-6">
+                                                    <div class="details-filter-row details-row-size mt-3">
+                                                       <div class="text-center pb-4">
+														<p>Status</p>	
+												<span class="badge badge-success">Active</span>
+													</div>
+                                                    </div><!-- End .details-filter-row -->
+                                                </div>
+                                                <div class="col-md-6 col-xs-6 col-sm-6">
+                                                    <div class="details-filter-row details-row-size mt-3">
+                                                      <div class="text-center pb-4">
+														<p>Bought</p>	
+												<span class="badge badge-primary">350</span>
+													</div>
+                                                    </div><!-- End .details-filter-row --> 
+                                                </div>
+                                            </div>
+                                    
+                                            <div class="details-filter-row details-row-size mt-3">
+                                              <div class="text-center pb-4">
+														<p>Wishlisted</p>	
+												<span class="badge badge-dark">350</span>
+													</div>
+                                            </div><!-- End .details-filter-row -->
+
+                                            <div class="product-details-footer">
+                                                <div class="row mt-2">
+                                                    <div class="col-md-6 col-s-12">
+                                                        <div class="product-cat">
+                                                        <div class="text-center pb-4">
+														<p>In Cart</p>	
+												<span class="badge badge-primary">350</span>
+													</div>
+                                                        </div><!-- End .product-cat -->
+                                                    </div>
+                                                    <div class="col-md-6 col-s-12 mt-3">
+                                                        <div class="product-cat">
+                                                         <div class="text-center pb-4">
+														<p>Trending</p>	
+												<span class="badge badge-success">Top</span>
+													</div>
+                                                        </div><!-- End .product-cat -->
+                                                    </div>
+                                                </div>
+                                            </div><!-- End .product-details-footer -->
+                                        </div><!-- End .product-details -->
+                                    </div><!-- End .row -->
+                                </div><!-- End .col-md-6 -->
+                            </div><!-- End .row -->
+                        </div>
+            </div>
+          {{>admin-footer}}

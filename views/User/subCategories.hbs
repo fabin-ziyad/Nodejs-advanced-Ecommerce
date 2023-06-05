@@ -1,0 +1,48 @@
+    <div class="page-wrapper">
+        {{>user-top-nav}}
+        <main class="main">
+        	<div class="page-header text-center" style="background-image: url('user/assets/images/page-header-bg.jpg')">
+        		<div class="container">
+        			<h1 class="page-title">Sub Category Boxed<span>Shop</span></h1>
+        		</div><!-- End .container -->
+        	</div><!-- End .page-header -->
+            <nav aria-label="breadcrumb" class="breadcrumb-nav breadcrumb-with-filter">
+                <div class="container">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                        <li class="breadcrumb-item"><a href="#">Product Category</a></li>
+                    </ol>
+                </div><!-- End .container -->
+            </nav><!-- End .breadcrumb-nav -->
+
+            <div class="page-content">
+            	<div class="categories-page">
+	                <div class="container">
+	                	<div class="row">
+							{{#each DataObj.SubCategories}}
+							{{#if this.Status}}
+	                				<div class="col-sm-3 SubContainer">
+				                			<a href="/productsUnder?Subcat={{this._id}}">
+				                				<h3 class="banner-title text-center text-muted mt-1">{{this.SubCategory}}</h3><!-- End .banner-title -->
+				                				<h4 class="banner-subtitle text-center">Main Category: <span class="mr-2">{{this.MainCategoryName}}</span></h4><!-- End .banner-subtitle -->
+				                				<h6 class="banner-subtitle text-center"> Products: <span class="mr-2">{{this.subCatProductCount}}</span></h6><!-- End .banner-subtitle -->
+				                			</a><!-- End .banner-link -->
+	                				</div><!-- End .col-sm-3 -->
+									{{/if}}
+							{{/each}}
+	                	</div><!-- End .row -->
+	                </div><!-- End .container -->
+                </div><!-- End .categories-page -->
+            </div><!-- End .page-content -->
+        </main><!-- End .main -->
+        {{>user-footer}}
+    </div><!-- End .page-wrapper -->
+    <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
+    {{>mobile-menu}}
+    
+
+   

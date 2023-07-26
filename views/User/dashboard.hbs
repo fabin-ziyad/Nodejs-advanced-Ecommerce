@@ -1,9 +1,5 @@
-  {{!-- {{#if DataObj.message.length>0}}
-	<p>{{message}}</p>
-  {{/if}} --}}
   
     <div class="page-wrapper">
-        {{>user-top-nav}}
         <main class="main">
         	<div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
         		<div class="container">
@@ -56,103 +52,109 @@
 								    </div><!-- .End .tab-pane -->
 
 								    <div class="tab-pane fade" id="tab-orders" role="tabpanel" aria-labelledby="tab-orders-link">
-								    	<div class="order-header">
-											<ul class="order-header-ul">
-												<li>Order No</li>
-												<li>Items</li>
-												<li>Amount</li>
-												<li>Status</li>
-												<li >view</li>
-											</ul>
-										</div>
+										<table class="table-sm order-table-sm"  id="dtBasicExample"  cellspacing="0" width="100%">
+											<thead>
+												<tr>
+													<th>Order No</th>
+													<th>Items</th>
+													<th>Amount</th>
+													<th>Status</th>
+													<th>View</th>
+												</tr>
+											</thead>
+											<tbody class="orderPaginationcontent">
 											{{#ifEquals DataObj.Orders null}}
 												<h4 class="text-center mt-4">No orders in this Account</h4>
 											{{/ifEquals}}
 											{{#each DataObj.Orders}}
-										<div class="orderPaginationcontent">
-  										<ul class="order-data" onclick="toggleCollapse('{{this._id}}')">
-
-    										<li>{{this.Order_no}}</li>
-    										<li>{{this.productsCount}}</li>
-    										<li>{{this.Total_Amount}}</li>
-											<li>Shipped</li>
-    										<li id="viewIcon{{this._id}}" class=""><i class="bi bi-caret-down-fill"></i></li>
-  										</ul>
-											
- 										<div class="orderCollapsed" id="collapseContent{{this._id}}">
-  											<div class="card card-body scrollable-div">
-												<div class="row">
-													<div class="col-xl-6 col-md-6 col-lg-6">
-														<address class="info-grid">
-															<div class="info-title"><strong>Delivery Address:</strong>
-															</div><br>
-															<div class="info-content">
-																	{{this.Address.First_Name}} {{this.Address.Last_Name}}<br>
-																	{{this.Address.Company_Name}}, {{this.Address.Street_Address}},<br>
-																	{{this.Address.Street_Address1}} {{this.Address.City}},<br>
-																	{{this.Address.State}},{{this.Address.Country}}, {{this.Address.Zip_Code}}<br>
-																<abbr title="Phone">P: </abbr> {{this.Address.Phone_Number}},{{this.Address.Email}}</div>
-														</address>
-													</div>
-													<div class="col-xl-6 col-md-6 col-lg-6">
-														<address class="info-grid">
-															<div class="info-title"><strong>Shipment</strong></div><br>
-															<div class="info-content">
-																Ordered On: <span>{{this.Order_Date}}</span><br>
-																Expected Delivery Date: <span>12-10-2022</span><br>
-																Payment Method: <span>{{this.Payment_Method}}</span><br>
-																Shipping charge : <span>None</span><br>
-																<div class="order-bottom-section">
-																	<div>Total: <span>{{this.Total_Amount}}</span></div>
-																	<button>Cancel</button>
+											<tr>
+												<td>{{this.Order_no}}</td>
+												<td>{{this.productsCount}}</td>
+												<td>{{this.Total_Amount}}</td>
+												<td>{{this.shipment.ShipmentStatus}}</td>
+												<td><button type="button" class="viewBtn"   onclick="orderViewModal('{{this._id}}')"><i class="bi bi-eye"></i></button></td>
+												<div id="{{this._id}}" class="modal fade" tabindex="-1">
+												<div class="modal-dialog modal-dialog-centered modal-lg " id="order-modal-dialog" role="document">
+				                                	<div class="modal-content rounded">
+					                                	<div class="modal-header d-flex justify-end px-4">
+						                                    <h5 class="modal-title" id="orderView">Order: {{this.Order_no}}</h5>
+						                                    <button type="button" class="btn btn-outline-success" onclick="closeModal('{{this._id}}')">
+																<b>X</b>
+															</button>
+						                           		</div>
+						                            	<div class="modal-body px-4">
+							                        	    <div class="card card-body">
+																<div class="row">
+																	<div class="col-xl-6 col-md-6 col-lg-6">
+																		<address class="info-grid">
+																			<div class="info-title"><strong>Delivery Address:</strong>
+																	</div><br>
+																	<div class="info-content">
+																		{{this.Address.First_Name}} {{this.Address.Last_Name}}<br>
+																		{{this.Address.Company_Name}}, {{this.Address.Street_Address}},<br>
+																		{{this.Address.Street_Address1}} {{this.Address.City}},<br>
+																		{{this.Address.State}},{{this.Address.Country}}, {{this.Address.Zip_Code}}<br>
+																		<abbr title="Phone">P: </abbr> {{this.Address.Phone_Number}},{{this.Address.Email}}</div>
+																		</address>
+																	</div>
+																	<div class="col-xl-6 col-md-6 col-lg-6">
+																		<address class="info-grid">
+																			<div class="info-title"><strong>Shipment</strong>
+																			</div><br>
+																				<div class="info-content">
+																					Ordered On: <span>{{this.Order_Date}}</span><br>
+																					Expected Delivery Date: <span>{{this.shipment.ExpectedDelivery}}</span><br>
+																					Payment Method: <span>{{this.Payment.Payment_Method}}</span><br>
+																					Shipping charge : <span>None</span><br>
+																					<div class="order-bottom-section">
+																						<div>Total: <span>{{this.Total_Amount}}</span>
+																						</div>
+																						{{#ifEquals this.shipment.ShipmentStatus "Cancelled"}}
+																							<p>Cancelled</p>
+																						{{else}}
+																						<button onclick="cancelOrder('{{this.Order_no}}')" id="orderCancelBtn">Cancel</button>	
+																						{{/ifEquals}}
+																					</div>
+																				</div>
+																		</address>
+																	</div>
+																</div>
+																<div class="row">
+																	{{#each this.products}}
+																	<div class="content  col-12 col-md-6 col-lg-6 mt-3">	
+																		<div class="product product-7 text-left">
+                                        			 						<figure class="product-media bg-white">
+																				<span class="product-label label-new">Bought 400 peoples</span>
+																				<div class="product-price mt-3 ml-2">
+																					<a href="/item?name={{this.ProductName}}&id={{this._id}}&category={{this.MainCategory}}&price={{this.ProductPrice}}">
+                                                					 					<div class="row mt-1">
+																							<div class=" col-3 col-md-3 col-lg-3">
+																								<img src="assets/img/products/{{this._id}}/{{this._id}}1.jpg" class="order-img" alt="product-img" class="img-fluid">
+																							</div>
+																							<div class="col-9 col-md-9 col-lg-9 ">
+																								<ul>
+																									<li class="mb-1 ">{{this.ProductName}}</li>
+																									<li class="mb-1 ">Amount <span>&#8377 {{this.ProductPrice}}</span></li>
+																									<li class="mb-1 ">Quantity <span> {{this.orderedQuantity}}</span></li>
+																								</ul>
+																							</div>
+											    										</div>
+																					</a>
+                                            									</div>
+																			</figure>
+																		</div>
+																	</div>
+																	{{/each}}	
 																</div>
 															</div>
-														</address>
+			                                    		 </div> {{!-- <end modal body>    --}}
 													</div>
 												</div>
-												<div class="row">
-													{{#each this.products}}
-													<div class="content  col-12 col-md-6 col-lg-6 mt-3">	
-														<div class="product product-7 text-left">
-                                        			 		<figure class="product-media bg-white">
-																<span class="product-label label-new">Bought 400 peoples</span>
-																<div class="product-price mt-3 ml-2">
-																	<a href="/orderdetails?orderid={{this._id}}">
-                                                					 	<div class="row mt-1">
-																			<div class=" col-3 col-md-3 col-lg-3">
-																				<img src="assets/img/products/{{this._id}}/{{this._id}}1.jpg" class="order-img" alt="product-img" class="img-fluid">
-																			</div>
-																			<div class="col-9 col-md-9 col-lg-9 ">
-																				<ul>
-																					<li class="mb-1 ">{{this.ProductName}}</li>
-																					<li class="mb-1 ">Amount <span>&#8377 {{this.ProductPrice}}</span></li>
-																					<li class="mb-1 ">Quantity <span> {{this.orderedQuantity}}</span></li>
-																				</ul>
-																			</div>
-											    						</div>
-																	</a>
-                                            					</div>
-															</figure>
-														</div>
-													</div>
-													{{/each}}
-													
 												</div>
-											</div>
-											</div>
-										</div>
+											</tr>
 										{{/each}}
-										<nav aria-label="Page navigation">
-                            <ul class="orderPagination justify-content-center" id="pagin">
-							        <li class="page-item page-link page-link-prev">
-							                <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Prev
-							        </li>
-							    
-							        <li class="page-item page-link page-link-next">
-							               Next<span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
-							        </li>
-							    </ul>
-                        </nav>
+										</tbody>
+										</table>
 								    </div><!-- .End .tab-pane -->
 
 								    <div class="tab-pane fade" id="tab-downloads" role="tabpanel" aria-labelledby="tab-downloads-link">
@@ -422,7 +424,6 @@
                 </div><!-- End .dashboard -->
             </div><!-- End .page-content -->
         </main><!-- End .main -->
-        {{>user-footer}}
     </div><!-- End .page-wrapper -->
     <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
 
@@ -430,131 +431,3 @@
     <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
 
     {{>mobile-menu}}
-    <!-- Sign in / Register Modal -->
-    <div class="modal fade" id="signin-modal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true"><i class="icon-close"></i></span>
-                    </button>
-
-                    <div class="form-box">
-                        <div class="form-tab">
-                            <ul class="nav nav-pills nav-fill" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link active" id="signin-tab" data-toggle="tab" href="#signin" role="tab" aria-controls="signin" aria-selected="true">Sign In</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="register-tab" data-toggle="tab" href="#register" role="tab" aria-controls="register" aria-selected="false">Register</a>
-                                </li>
-                            </ul>
-                            <div class="tab-content" id="tab-content-5">
-                                <div class="tab-pane fade show active" id="signin" role="tabpanel" aria-labelledby="signin-tab">
-                                    <form action="#">
-                                        <div class="form-group">
-                                            <label for="singin-email">Username or email address *</label>
-                                            <input type="text" class="form-control" id="singin-email" name="singin-email" required>
-                                        </div><!-- End .form-group -->
-
-                                        <div class="form-group">
-                                            <label for="singin-password">Password *</label>
-                                            <input type="password" class="form-control" id="singin-password" name="singin-password" required>
-                                        </div><!-- End .form-group -->
-
-                                        <div class="form-footer">
-                                            <button type="submit" class="btn btn-outline-primary-2">
-                                                <span>LOG IN</span>
-                                                <i class="icon-long-arrow-right"></i>
-                                            </button>
-
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="signin-remember">
-                                                <label class="custom-control-label" for="signin-remember">Remember Me</label>
-                                            </div><!-- End .custom-checkbox -->
-
-                                            <a href="#" class="forgot-link">Forgot Your Password?</a>
-                                        </div><!-- End .form-footer -->
-                                    </form>
-                                    <div class="form-choice">
-                                        <p class="text-center">or sign in with</p>
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <a href="#" class="btn btn-login btn-g">
-                                                    <i class="icon-google"></i>
-                                                    Login With Google
-                                                </a>
-                                            </div><!-- End .col-6 -->
-                                            <div class="col-sm-6">
-                                                <a href="#" class="btn btn-login btn-f">
-                                                    <i class="icon-facebook-f"></i>
-                                                    Login With Facebook
-                                                </a>
-                                            </div><!-- End .col-6 -->
-                                        </div><!-- End .row -->
-                                    </div><!-- End .form-choice -->
-                                </div><!-- .End .tab-pane -->
-                                <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
-                                    <form action="#">
-                                        <div class="form-group">
-                                            <label for="register-email">Your email address *</label>
-                                            <input type="email" class="form-control" id="register-email" name="register-email" required>
-                                        </div><!-- End .form-group -->
-
-                                        <div class="form-group">
-                                            <label for="register-password">Password *</label>
-                                            <input type="password" class="form-control" id="register-password" name="register-password" required>
-                                        </div><!-- End .form-group -->
-
-                                        <div class="form-footer">
-                                            <button type="submit" class="btn btn-outline-primary-2">
-                                                <span>SIGN UP</span>
-                                                <i class="icon-long-arrow-right"></i>
-                                            </button>
-
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="register-policy" required>
-                                                <label class="custom-control-label" for="register-policy">I agree to the <a href="#">privacy policy</a> *</label>
-                                            </div><!-- End .custom-checkbox -->
-                                        </div><!-- End .form-footer -->
-                                    </form>
-                                    <div class="form-choice">
-                                        <p class="text-center">or sign in with</p>
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <a href="#" class="btn btn-login btn-g">
-                                                    <i class="icon-google"></i>
-                                                    Login With Google
-                                                </a>
-                                            </div><!-- End .col-6 -->
-                                            <div class="col-sm-6">
-                                                <a href="#" class="btn btn-login  btn-f">
-                                                    <i class="icon-facebook-f"></i>
-                                                    Login With Facebook
-                                                </a>
-                                            </div><!-- End .col-6 -->
-                                        </div><!-- End .row -->
-                                    </div><!-- End .form-choice -->
-                                </div><!-- .End .tab-pane -->
-                            </div><!-- End .tab-content -->
-                        </div><!-- End .form-tab -->
-                    </div><!-- End .form-box -->
-                </div><!-- End .modal-body -->
-            </div><!-- End .modal-content -->
-        </div><!-- End .modal-dialog -->
-    </div><!-- End .modal -->
-
-    <!-- Plugins JS File -->
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/jquery.hoverIntent.min.js"></script>
-    <script src="assets/js/jquery.waypoints.min.js"></script>
-    <script src="assets/js/superfish.min.js"></script>
-    <script src="assets/js/owl.carousel.min.js"></script>
-    <!-- Main JS File -->
-    <script src="assets/js/main.js"></script>
-</body>
-
-
-<!-- Mirrored from portotheme.com/html/molla/dashboard.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 24 Aug 2022 16:19:15 GMT -->
-</html>

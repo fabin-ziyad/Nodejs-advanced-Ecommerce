@@ -1,0 +1,9 @@
+module.exports={
+    getSubCatUnderMain:require('./category/SubCatUnderMain'),
+    getMainCategories:require('./category/getMainCategories'),
+    getSubCategories:require('./category/getSubCategories'),
+    listProducts:require('./listProducts'),
+    filterProduct:require('./filterProduct'),
+    getProductsbyCategory:require('./getProductbyCat'),
+    getProductDetail:require('./getProductDetail')
+}

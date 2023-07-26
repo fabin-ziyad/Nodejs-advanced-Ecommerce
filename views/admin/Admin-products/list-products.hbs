@@ -33,9 +33,10 @@
 													<th>Name</th>
 													<th>Price</th>
 													<th>Brand</th>
-													<th>Action</th>
+													<th>Created</th>
 													<th>Disable</th>
 													<th>InStock</th>
+													<th>Action</th>
 												</tr>
 											</thead>
 
@@ -48,19 +49,10 @@
 													
 													<td><img class="tbl-thumb" src="/assets/img/products/{{this._id}}/{{this._id}}1.jpg" alt="Product Image" style="width: 60px;height:58px" /></td>
 													<td>{{this.ProductName}}</td>
-													<td>₹<strong>{{this.ProductPrice}}</strong> <span class="ml-3"><strike>₹{{this.MRP}}</strike></span></td>
+													<td>₹<strong>{{this.ProductPrice}}</strong></td>
 													<td>{{this.BrandName}}</td>
 
-													<td>
-														<div class="btn-group">
-															<a href="javascript:0" type="button"
-																class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#info{{this._id}}">Info</a>
-														</div>
-														<div class="btn-group">
-															<a href="javascript:0" type="button"
-																class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#Edit{{this._id}}">Edit</a>
-														</div>
-													</td>
+													<td>{{this.DateAdded}}</td>
 													
 													<td>
 														<label class="switch mt-2">
@@ -71,6 +63,16 @@
 														<label class="switch mt-2">
 															<input type="checkbox"  id="Productid{{this._id}}" onchange="Stock('{{this._id}}')" checked>
 															<span class="slider round"></span>
+													</td>
+													<td>
+														<div class="btn-group">
+															<a href="javascript:0" type="button"
+																class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#info{{this._id}}">Info</a>
+														</div>
+														<div class="btn-group">
+															<a href="javascript:0" type="button"
+																class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#Edit{{this._id}}">Edit</a>
+														</div>
 													</td>
 												</tr>
 												

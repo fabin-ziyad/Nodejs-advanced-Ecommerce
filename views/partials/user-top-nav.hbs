@@ -63,7 +63,7 @@
               <a href="/">Home</a>
             </li>
             <li>
-              <a href="/mainCategories">Categories</a>
+              <a href="/Categories">Categories</a>
             </li>
             <li>
               <a href="#" class="sf-with-ul">Product</a>
@@ -145,15 +145,15 @@
         <div class="cart-dropdown">
           <a href="/wishlist" class="dropdown-toggle">
             <i class="icon-heart-o wishlist" title="wishlist"></i><sup><span
-                class="cart-count"
-              >3</span></sup>
+                class="cart-count" id="wishlistCount"
+              >{{DataObj.wishlist_products}}</span></sup>
           </a>
         </div><!-- End .cart-dropdown -->
         <div class="dropdown cart-dropdown">
           <a href="/cart" class="dropdown-toggle">
-            <i class="icon-shopping-cart" title="Cart"></i><sup><span
-                class="cart-count"
-              >{{DataObj.CartCount}}</span></sup>
+            <i class="icon-shopping-cart" title="Cart" ></i><sup><span
+                class="cart-count" id="cartCount"
+              >{{DataObj.CartQuantity}}</span></sup>
 
           </a>
         </div><!-- End .cart-dropdown -->

@@ -1,0 +1,12 @@
+module.exports={
+    userLogin:require('./login'),
+    register:require('./register'),
+    getMyAddresses:require('./dashboard/Address/getMyAddresses'),
+    getDefaultAddress:require('./dashboard/Address/getDefaultAddress'),
+    makeDefaultAddress:require('./dashboard/Address/makeDefault'),
+    RemoveDefaultAddress:require('./dashboard/Address/removeDefault'),
+    deleteAddress:require('./dashboard/Address/deleteAddress'),
+    saveAddress:require('./dashboard/Address/saveAddress'),
+    updateAddress:require('./dashboard/Address/updateAddress'),
+    updateProfile:require('./dashboard/Profile/updateProfile')
+}

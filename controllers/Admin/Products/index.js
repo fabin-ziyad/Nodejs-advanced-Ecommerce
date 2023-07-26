@@ -1,0 +1,16 @@
+module.exports={
+    addProduct:require('./addProduct'),
+    updateProduct:require('./updateProduct'),
+    deleteProduct:require('./deleteProduct'),
+    disbaleProduct:require('./disableProduct'),
+    enableProduct:require('./enableProduct'),
+    activeProducts:require('./active-inactive/allActives'),
+    inactiveProducts:require('./active-inactive/all-inactives'),
+    listProducts:require("./listProducts"),
+    getProductDetails:require("./getProductDetail"),
+    fetchAllOutOfStocks:require('./fetchAllOutOfStocks'),
+    toggleStock:require("./stock_n_Arrivals/toggleStock"),
+    toggleTopRated:require("./stock_n_Arrivals/toggleTopRated"),
+    toggleFeatured:require("./stock_n_Arrivals/toggleFeatured"),
+    toggleArrivals:require("./stock_n_Arrivals/toggleArrival")
+}

@@ -1,0 +1,11 @@
+module.exports={
+    getCartCounts:require('./fetchCartCount'),
+    removefromCartAfterOrder:require('./clearCart'),
+    updateCartValue:require('./updateCart'),
+    getCartProducts:require('./getCartProducts'),
+    addToCart:require('./addtoCart'),
+    removeFromCart:require('./removeFromCart'),
+    addtoWishlist:require('./addtoWishlist'),
+    removefromWishlist:require('./removeFromWishlist'),
+    getWishlists:require('./getWishlists')
+}

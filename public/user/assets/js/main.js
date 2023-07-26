@@ -1,9 +1,30 @@
 // Main Js File
 $(document).ready(function () {
   "use strict";
-
   owlCarousels();
   quantityInputs();
+  $("#dtBasicExample").DataTable({
+    pageLength: 6,
+    lengthChange: false,
+    language: {
+      paginate: {
+        next: '<i class="bi bi-arrow-right">',
+        previous: '<i class="bi bi-arrow-left">',
+      },
+    },
+    bInfo: false,
+  });
+  $(".dataTables_length").addClass("bs-select");
+
+  // error modal controller
+  const msgModal = document.getElementById("msgModal");
+  console.log(msgModal?.style?.display);
+  if (msgModal?.style?.display === "block") {
+    setTimeout(function () {
+      msgModal.style.display = "none";
+      msgModal.style.transitionDuration = "0.5s";
+    }, 4000);
+  }
 
   // Header Search Toggle
 
@@ -888,6 +909,7 @@ function cartProductRemove(CartId, ProductUniqueId, UserId) {
       if (!response.Empty) {
         $("#CartTable").load(window.location.href + " #CartTable");
         $("#TotalPrice").load(window.location.href + " #TotalPrice");
+        $("#cartCount").load(window.location.href + " #cartCount");
         $("#totalSum").load(window.location.href + " #totalSum");
       } else {
         location.reload();
@@ -959,6 +981,7 @@ function wishlist(ProductId, UserId) {
     success: (Response) => {
       if (Response.Status) {
         alert("added to Wishlist");
+        $("#wishlistCount").load(window.location.href + " #wishlistCount");
       } else {
         alert("already exists");
       }
@@ -974,6 +997,7 @@ function RemoveFromWishlist(UserId, ProductId) {
     success: (Response) => {
       if (Response.Status) {
         $("#WishlistTable").load(window.location.href + " #WishlistTable");
+        $("#wishlistCount").load(window.location.href + " #wishlistCount");
       } else if (!Response.Status) {
         alert("Error in deleting");
       }
@@ -1032,7 +1056,7 @@ showPage = function (page) {
   $(".paginationcontent").hide();
   $(".paginationcontent").each(function (n) {
     if (n >= pageSize * (page - 1) && n < pageSize * page) $(this).show();
-    if (page==1 && $(".paginationcontent").length <= 9) {
+    if (page == 1 && $(".paginationcontent").length <= 9) {
       $(".pagination .page-link-next").hide();
       $(".pagination .page-link-prev").hide();
     } else if (page === pageCount) {
@@ -1059,43 +1083,8 @@ $(".pagination .page-link-prev").click(function () {
 
 // OrderPage
 
-pageSize = 6;
-pageNo = 1;
-var pageCount = Math.ceil($(".orderPaginationcontent").length / pageSize);
-showPage = function (page) {
-  console.log(page,pageCount, $(".orderorderPaginationcontent").length);
-  $(".orderPaginationcontent").hide();
-  $(".orderPaginationcontent").each(function (n) {
-    if (n >= pageSize * (page - 1) && n < pageSize * page) $(this).show();
-    if (page==1 && $(".orderPaginationcontent").length <= 6) {
-      $(".orderPagination .page-link-next").hide();
-      $(".orderPagination .page-link-prev").hide();
-    } else if (page === pageCount) {
-      $(".orderPagination .page-link-next").hide();
-      $(".orderPagination .page-link-prev").show();
-    } else if (page === parseInt(1) && $(".orderPaginationcontent").length > 6) {
-      $(".orderPagination .page-link-next").show();
-      $(".orderPagination .page-link-prev").hide();
-    } else if (page <= pageCount) {
-      $(".orderPagination .page-link-next").show();
-      $(".orderPagination .page-link-prev").show();
-    }
-  });
-};
-showPage(pageNo);
-$(".orderPagination .page-link-next").click(function () {
-  pageNo++;
-  showPage(parseInt(pageNo));
-});
-$(".orderPagination .page-link-prev").click(function () {
-  pageNo--;
-  showPage(parseInt(pageNo));
-});
-
-
-
 function filterMainCategory(MainCatId) {
-  let checkbox = document.getElementById(MainCatId);;
+  let checkbox = document.getElementById(MainCatId);
   if (checkbox.checked) {
     $(".CategoryInputs").attr("disabled", true);
     $(checkbox).attr("disabled", false);
@@ -1119,7 +1108,7 @@ function filterMainCategory(MainCatId) {
 }
 
 function filterBySize(MainCatId) {
-  let checkbox = document.getElementById(MainCatId);;
+  let checkbox = document.getElementById(MainCatId);
   if (checkbox.checked) {
     $(".CategoryInputs").attr("disabled", true);
     $(checkbox).attr("disabled", false);
@@ -1141,36 +1130,106 @@ function filterBySize(MainCatId) {
     });
   }
 }
-$('#OrderForm').submit((e) => {
-  e.preventDefault()
-  let method = document.querySelector('input[name="paymentMethod"]:checked').value;
-  alert(method)
-  let totalAmount = parseInt( $('#totalSum').text())
-  alert(totalAmount);
-  if (method==='COD') {
-        $.ajax({
-          url: '/orderSuccess',
-          method: 'post',
-          data: { method: method,TotalAmount:totalAmount },
-          success: (response) => {
-            if (response.Placed) {
-             location.href='/success' 
-            }
-          }
-        })
-  } else if (method === 'PayPal') {
-    alert('paypal')
-  } else if (method === 'Online') {
-    alert('Online')
-  } else {
-    alert('Card')
-  }
-  
-})
+$("#OrderForm").submit((e) => {
+  e.preventDefault();
+  let method = document.querySelector(
+    'input[name="paymentMethod"]:checked'
+  ).value;
+  document.getElementById("paymentBtn").disabled = true;
+  let totalAmount = parseInt($("#totalSum").text());
+  setTimeout(function() {
+    document.getElementById("paymentBtn").disabled = false;
+}, 5000);
+  $.ajax({
+    url: "/createOrder",
+    method: "post",
+    data: { method,TotalAmount: totalAmount },
+    success: (response) => {
+      if (response.paymentSuccess) {
+        location.href = "/success";
+        $("#cartCount").load(window.location.href + " #cartCount");
 
+      } else {
+        razorpayPayment(response);
+      }
+    },
+  });
+});
+
+function razorpayPayment(order) {
+  var options = {
+    key: "rzp_test_Ta5B0oO7u00fCU",
+    amount: order.amount ,
+    currency: "INR",
+    name: "Fabin Ziyad",
+    description: "Test Transaction",
+    image: "https://example.com/your_logo",
+    order_id: order.id, 
+    callback_url: "https://eneqd3r9zrjok.x.pipedream.net/",
+    prefill: {
+      name: order.customerName, 
+      email: order.customerMail,
+      contact: order.customerPhone, 
+    },
+    handler:  (response)=> {
+      verifyPayment(response,order)
+    },
+    notes: {
+      address: "Razorpay Corporate Office",
+    },
+    theme: {
+      color: "#3399cc",
+    },
+  };
+  var rzp1 = new Razorpay(options);
+  rzp1.open();
+}
+function verifyPayment(response,order){
+  $.ajax({
+    url:'/verifyPayment',
+    method:'post',
+    data:{response,order},
+    success:(verified)=>{
+      if(verified.status){
+        location.href='/'
+      }else{
+        alert('Payment Failed')
+      }
+    }
+  })
+}
 function toggleCollapse(orderId) {
-  var collapseContent = document.getElementById("collapseContent"+orderId);
-  var viewIcon=document.getElementById('viewIcon'+orderId);
+  var collapseContent = document.getElementById("collapseContent" + orderId);
+  var viewIcon = document.getElementById("viewIcon" + orderId);
   collapseContent.classList.toggle("orderCollapsed");
-  viewIcon.classList.toggle("viewIconStyle")
+  viewIcon.classList.toggle("viewIconStyle");
+}
+function closeModal() {
+  const msgModal = document.getElementById("msgModal");
+  msgModal.style.display = "none";
+}
+function cancelOrder(orderNo) {
+  $("#orderCancelBtn").attr("disabled", "disabled");
+  $.ajax({
+    url: "/cancelOrder",
+    method: "post",
+    data: { orderNo: orderNo },
+    success: (response) => {
+      if (response.status) {
+        location.reload();
+        $("#orderCancelBtn").removeAttr("disabled");
+      } else {
+        alert("something went wrong");
+      }
+    },
+  });
+}
+
+function orderViewModal(orderId) {
+  let orderModal = document.getElementById(orderId);
+  $(orderModal).modal("show");
+}
+function closeModal(orderId) {
+  let orderModal = document.getElementById(orderId);
+  $(orderModal).modal("hide");
 }

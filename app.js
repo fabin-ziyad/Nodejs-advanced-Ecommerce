@@ -47,6 +47,10 @@ db.connect((err) => {
   if (err) console.log(err,'db error')
   else console.log('db connected')
 })
+app.use((req, res, next)=>{
+  app.locals.success = req.flash('success')
+  next();
+});
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

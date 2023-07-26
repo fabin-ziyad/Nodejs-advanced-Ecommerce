@@ -1,0 +1,9 @@
+module.exports={
+    verify:require('./verifyPayment'),
+    togglePaymentStatus:require('./togglePaymentStatus'),
+    placeOrder:require('./placeOrder'),
+    getOrderTotal:require('./getOrderTotal'),
+    getMyOrders:require('./getMyOrders'),
+    cancelOrder:require('./cancelOrder'),
+    generateRazorPay:require('./generateRazorpay')
+}

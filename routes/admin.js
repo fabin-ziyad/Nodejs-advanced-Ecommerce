@@ -1,13 +1,14 @@
 var express = require("express");
-var router = express.Router();
-var objectid = require("mongodb").ObjectId;
-var bcrypt = require("bcrypt");
-const productHelpers = require("../helpers/product-helpers");
-const adminHelpers = require("../helpers/admin-helpers");
-const orderHlepers = require("../helpers/order-helpers");
-const queryString = require("querystring");
+var router = express.Router();;
 const fs = require("fs");
 const dateConvert = require("../middleware/dateConvert");
+const adminCategoryController = require("../controllers/Admin/Categories");
+const adminProductController = require("../controllers/Admin/Products");
+const adminProfileController = require("../controllers/Admin/admin");
+const fetchAllUsers=require('../common-functions/fetchAllUser')
+const markShipment=require('../controllers/Admin/shipment')
+const adminOrderController=require('../controllers/Admin/orders')
+const adminShipmentContorller=require('../controllers/Admin/shipment')
 verifyLogin = (req, res, next) => {
   if (req.session.AdminLogged) {
     next();
@@ -33,13 +34,12 @@ router.get("/login", (req, res) => {
 /* Login to admin panel from login page */
 
 router.post("/login", (req, res) => {
-  adminHelpers.adminLogin(req.body).then((response) => {
+  adminProfileController.adminLogin(req.body).then((response) => {
     if (response.DataResponse) {
       req.session.admin = response.AdminData;
       req.session.AdminLogged = true;
       res.redirect("/admin/");
     } else {
-      req.session.adminLoginError = "Invalid username or Password";
       res.redirect("/admin/login");
     }
   });
@@ -57,9 +57,9 @@ router.get("/logout", verifyLogin, (req, res) => {
 
 /* GET authentications/admin-login */
 router.get("/", async (req, res) => {
-  productHelpers.AllActiveCount().then((ActiveCounts) => {
-    productHelpers.AllInactiveCount().then((InactiveCounts) => {
-      productHelpers.GetAdmin().then((AdminData) => {
+  adminProductController.activeProducts().then((ActiveCounts) => {
+    adminProductController.inactiveProducts().then((InactiveCounts) => {
+      adminProfileController.getAdmin().then((AdminData) => {
         res.render("admin/index", {
           ActiveCounts,
           InactiveCounts,
@@ -77,8 +77,8 @@ router.get("/", async (req, res) => {
 
 /* GET add-product.hbs page */
 router.get("/Add-Product", verifyLogin, (req, res) => {
-  productHelpers.GetMainCategories().then((AllMainCat) => {
-    productHelpers.AllSubCategory().then((AllSubcat) => {
+  adminCategoryController.getMainCategories().then((AllMainCat) => {
+    adminCategoryController.getAllSubCategories().then((AllSubcat) => {
       res.render("admin/Admin-products/add-product", {
         AllMainCat,
         AllSubcat,
@@ -93,7 +93,7 @@ router.get("/Add-Product", verifyLogin, (req, res) => {
 
 /* Adding product to database. */
 router.post("/add-product", (req, res) => {
-  productHelpers.addproducts(req.body).then((responseId) => {
+  adminProductController.addProduct(req.body).then((responseId) => {
     let ProductImages = req.files;
     var firstImage = ProductImages.Image1;
     var secondImage = ProductImages.Image2;
@@ -134,7 +134,7 @@ router.post("/add-product", (req, res) => {
 });
 
 router.post("/UpdateProduct", (req, res) => {
-  productHelpers.UpdateProduct(req.body).then((responseId) => {
+  adminProductController.updateProduct(req.body).then((responseId) => {
     let ProductImages = req.files;
     if (ProductImages) {
       var firstImage = ProductImages.Image1;
@@ -168,7 +168,7 @@ router.post("/UpdateProduct", (req, res) => {
 });
 
 router.post("/DeleteProduct", (req, res) => {
-  productHelpers.DeleteProduct(req.body).then((response) => {
+  adminProductController.deleteProduct(req.body).then((response) => {
     var DeleteImgs = `./public/assets/img/products/${response}`;
     try {
       fs.rmdirSync(DeleteImgs, { recursive: true });
@@ -184,8 +184,8 @@ router.post("/DeleteProduct", (req, res) => {
 
 /* GET list-products.hbs page . */
 router.get("/list-products", (req, res) => {
-  productHelpers.listProducts().then((productlists) => {
-    productHelpers.GetMainCategories().then((AllMainCat) => {
+  adminProductController.listProducts().then((productlists) => {
+    adminCategoryController.getMainCategories().then((AllMainCat) => {
       res.render("admin/Admin-products/list-products", {
         productlists,
         AllMainCat,
@@ -197,7 +197,7 @@ router.get("/list-products", (req, res) => {
 });
 
 router.get("/Inactive-products", verifyLogin, (req, res) => {
-  productHelpers.listProducts().then((productlists) => {
+  adminProductController.listProducts().then((productlists) => {
     res.render("admin/Admin-inactives/Inactive-Products", {
       productlists,
       AdminData: req.session.admin,
@@ -206,19 +206,19 @@ router.get("/Inactive-products", verifyLogin, (req, res) => {
 });
 
 router.post("/DisableProduct", (req, res) => {
-  productHelpers.DisableProduct(req.body.ProductId).then(() => {
+  adminProductController.disbaleProduct(req.body.ProductId).then(() => {
     res.json({ status: true });
   });
 });
 
 router.post("/EnableProduct", (req, res) => {
-  productHelpers.EnableProduct(req.body.ProductId).then(() => {
+  adminProductController.enableProduct(req.body.ProductId).then(() => {
     res.json({ status: true });
   });
 });
 
 router.get("/Product-View", async (req, res) => {
-  let DetailedView = await productHelpers.GetProductDetails(req.query.id);
+  let DetailedView = await adminProductController.getProductDetails(req.query.id);
   res.render("admin/Admin-products/Product-View", {
     DetailedProduct: DetailedView,
     AdminData: req.session.admin,
@@ -238,8 +238,8 @@ router.get("/grid-view-products", verifyLogin, function (req, res, next) {
 
 /* GET main-category.hbs page */
 router.get("/main-category", verifyLogin, (req, res, next) => {
-  productHelpers.GetMainCategories().then((AllMainCat) => {
-    productHelpers.AllSubCategory().then((AllSubCat) => {
+  adminCategoryController.getMainCategories().then((AllMainCat) => {
+    adminCategoryController.getAllSubCategories().then((AllSubCat) => {
       res.render("admin/Admin-categories/main-category", {
         AllMainCat,
         AllSubCat,
@@ -252,7 +252,7 @@ router.get("/main-category", verifyLogin, (req, res, next) => {
 
 /*     Adding main category with its image.      */
 router.post("/add-main-category", (req, res) => {
-  productHelpers.AddMainCategory(req.body).then((id) => {
+  adminCategoryController.addMainCategory(req.body).then((id) => {
     let thumbImage = req.files.image;
     if (thumbImage) {
       thumbImage.mv(
@@ -274,7 +274,7 @@ router.post("/add-main-category", (req, res) => {
 
 /* Update main-category. */
 router.post("/UpdateMainCat", (req, res) => {
-  productHelpers.UpdateMainCategory(req.body).then((id) => {
+  adminCategoryController.updateMainCategory(req.body).then((id) => {
     let updateId = req.body.ID;
     let updateImage = req.files;
     if (updateImage) {
@@ -292,7 +292,7 @@ router.post("/UpdateMainCat", (req, res) => {
 router.post("/DeleteMainCat", (req, res) => {
   let MainCatImage =
     "./public/assets/category-thumb/" + req.body.MainCatId + ".jpg";
-  productHelpers.DeleteMainCat(req.body).then(() => {
+  adminCategoryController.deleteMainCategory(req.body).then(() => {
     fs.unlinkSync(MainCatImage);
     res.redirect("/admin/inactive-Maincategories");
   });
@@ -303,8 +303,8 @@ router.post("/DeleteMainCat", (req, res) => {
 
 /* GET sub-category.hbs page . */
 router.get("/sub-category", verifyLogin, (req, res) => {
-  productHelpers.AllSubCategory().then((AllSubCat) => {
-    productHelpers.GetMainCategories().then((AllMainCat) => {
+  adminCategoryController.getAllSubCategories().then((AllSubCat) => {
+    adminCategoryController.getMainCategories().then((AllMainCat) => {
       res.render("admin/Admin-categories/sub-category", {
         AllSubCat,
         AllMainCat,
@@ -317,19 +317,20 @@ router.get("/sub-category", verifyLogin, (req, res) => {
 
 /* POST sub-category.hbs page . */
 router.post("/add-sub-category", (req, res) => {
-  productHelpers.AddSubCategory(req.body).then((responseId) => {
+  console.log("req",req.body);
+  adminCategoryController.addSubCategory(req.body).then((responseId) => {
     res.json({ status: true });
   });
 });
 
 router.post("/UpdateSubCat", (req, res) => {
-  productHelpers.UpdateSubCat(req.body).then((response) => {
+  adminCategoryController.updateSubCategory(req.body).then((response) => {
     res.redirect("/admin/sub-category");
   });
 });
 
 router.get("/Inactive-subcategories", verifyLogin, (req, res) => {
-  productHelpers.AllSubCategory().then((AllSubCat) => {
+  adminCategoryController.getAllSubCategories().then((AllSubCat) => {
     res.render("admin/Admin-inactives/Inactive-SubCats", {
       AllSubCat,
       AdminData: req.session.admin,
@@ -338,19 +339,19 @@ router.get("/Inactive-subcategories", verifyLogin, (req, res) => {
 });
 
 router.post("/DisableSubCat", (req, res) => {
-  productHelpers.DisbaleSubCat(req.body.SubCatId).then(() => {
+  adminCategoryController.disableSubCategory(req.body.SubCatId).then(() => {
     res.json({ status: true });
     // res.redirect('/admin/Inactive-subcategories')
   });
 });
 
 router.post("/DeleteSubCat", (req, res) => {
-  productHelpers.DeleteSubCat(req.body).then(() => {
+  adminCategoryController.deleteSubCategory(req.body).then(() => {
     res.redirect("/admin/Inactive-subcategories");
   });
 });
 router.post("/EnableSubCat", (req, res) => {
-  productHelpers.EnableSubCat(req.body.SubCatId).then(() => {
+  adminCategoryController.enableSubCategory(req.body.SubCatId).then(() => {
     res.json({ status: true });
     // res.redirect('/admin/Inactive-subcategories')
   });
@@ -370,7 +371,7 @@ router.get("/add-shipment", verifyLogin, (req, res, next) => {
 });
 
 router.post("/MarkShipment", (req, res) => {
-  orderHlepers.MarkShipment(req.body.OrderId).then((response) => {
+  markShipment.markShipment(req.body.OrderId).then((response) => {
     res.json(response);
   });
 });
@@ -378,11 +379,7 @@ router.post("/MarkShipment", (req, res) => {
 
 /* GET orders/order-history.hbs page . */
 router.get("/order-history", verifyLogin, (req, res, next) => {
-  orderHlepers.GetAllOrders().then((AllOrders) => {
-    AllOrders.map(async (obj) => {
-      obj.Order_Date = await dateConvert.convertDate(obj.Order_Date);
-    });
-    // console.log("AllOrders",AllOrders);
+  adminOrderController.fetchAllOrders().then((AllOrders) => {
     res.render("admin/Admin-orders/order-history", {
       AllOrders,
       AdminData: req.session.admin,
@@ -394,15 +391,16 @@ router.get("/order-history", verifyLogin, (req, res, next) => {
 
 /* GET orders/order-details.hbs page . */
 router.get("/order-details", verifyLogin, (req, res, next) => {
-  orderHlepers.getOrderDetailsByQuery(req.query.order).then((Data) => {
-    if(Data !==null || Data !==undefined){
-      orderHlepers.getShipment(Data.Order._id).then(async(Shipment)=>{
-        Shipment.updatedAt=await dateConvert.convertDate(Shipment.updatedAt)
+  adminOrderController.fetchOrderDetails(req.query.order).then((Data) => {
+    if (Data !== null || Data !== undefined) {
+      adminShipmentContorller.getShipment(Data.Order._id).then(async (Shipment) => {
+        Shipment.updatedAt = await dateConvert.convertDate(Shipment.updatedAt);
         res.render("admin/Admin-orders/order-details", {
-          Data,Shipment,
+          Data,
+          Shipment,
           AdminData: req.session.admin,
         });
-      })
+      });
     }
   });
 });
@@ -441,19 +439,22 @@ router.get("/brands", verifyLogin, (req, res, next) => {
 /*Registered Users*/
 
 /* GET Admin/reg-user.hbs page . */
-router.get("/reg-user", verifyLogin, (req, res) => {
-  adminHelpers.GetAllUser().then((AllUsers) => {
-    res.render("admin/Admin-reg-users/reg-users", {
-      AdminData: req.session.admin,
-      AllUsers,
-    });
+router.get("/reg-user", verifyLogin, async(req, res) => {
+ let AllUsers=await fetchAllUsers()
+if(AllUsers.length>0){
+  res.render("admin/Admin-reg-users/reg-users", {
+    AdminData: req.session.admin,
+    AllUsers,
   });
+}else{
+  res.redirect('/admin/')
+}
 });
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 router.get("/inactive-Maincategories", verifyLogin, (req, res) => {
-  productHelpers.GetMainCategories().then((AllMainCat) => {
+  adminCategoryController.activeMainCategories().then((AllMainCat) => {
     res.render("admin/Admin-inactives/Inactive-MainCats", {
       AllMainCat,
       AdminData: req.session.admin,
@@ -462,25 +463,25 @@ router.get("/inactive-Maincategories", verifyLogin, (req, res) => {
 });
 
 router.post("/DisableMainCat", (req, res) => {
-  productHelpers.DisableMainCat(req.body.MainCatId).then((response) => {
+ adminCategoryController.disableMainCategory(req.body.MainCatId).then((response) => {
     res.json({ status: true });
   });
 });
 
 router.post("/EnableMainCat", (req, res) => {
-  productHelpers.EnableMainCat(req.body.MainCatId).then(() => {
+  adminCategoryController.enableMainCategory(req.body.MainCatId).then(() => {
     res.json({ status: true });
   });
 });
 
 /*Admin*/
 router.get("/Admin-Profile", verifyLogin, (req, res) => {
-  productHelpers.GetAdmin().then((Admin) => {
+  adminProfileController.getAdmin().then((Admin) => {
     res.render("admin/Admin-profile", { Admin, AdminData: req.session.admin });
   });
 });
 router.post("/UpdateAdminProfile", (req, res) => {
-  productHelpers.UpdateAdminProfle(req.body).then(() => {});
+  adminProfileController.updateAdmin(req.body).then(() => {});
 });
 
 //banners........
@@ -551,61 +552,61 @@ router.post("/Second_Slider", (req, res) => {
 });
 
 router.post("/Enable_Arrival", (req, res) => {
-  productHelpers.Activate_Arrivals(req.body.ProductID).then(() => {
+  adminProductController.toggleArrivals(req.body.ProductID,true).then(() => {
     res.json({ status: true });
   });
 });
 
 router.post("/Disable_Arrival", (req, res) => {
-  productHelpers.Deactivate_Arrivals(req.body.ProductID).then(() => {
+  adminProductController.toggleArrivals(req.body.ProductID,false).then(() => {
     res.json({ status: true });
   });
 });
 
 router.get("/showcase", (req, res) => {
-  productHelpers.listProducts().then((productlists) => {
+  adminProductController.listProducts().then((productlists) => {
     res.render("admin/Admin-products/Showcase", { productlists });
   });
 });
 
 router.post("/Disable_Featured", (req, res) => {
-  productHelpers.Inactivate_Featured(req.body.ProductID).then(() => {
+  adminProductController.toggleFeatured(req.body.ProductID,false).then(() => {
     res.json({ status: true });
   });
 });
 
 router.post("/Enable_Featured", (req, res) => {
-  productHelpers.Activate_Featured(req.body.ProductID).then(() => {
+  adminProductController.toggleFeatured(req.body.ProductID,true).then(() => {
     res.json({ status: true });
   });
 });
 
 router.post("/Disable_TopRated", (req, res) => {
-  productHelpers.Inactivate_TopRated(req.body.ProductID).then(() => {
+  adminProductController.toggleTopRated(req.body.ProductID,false).then(() => {
     res.json({ status: true });
   });
 });
 
 router.post("/Enable_TopRated", (req, res) => {
-  productHelpers.Activate_TopRated(req.body.ProductID).then(() => {
+  adminProductController.toggleTopRated(req.body.ProductID,true).then(() => {
     res.json({ status: true });
   });
 });
 
-router.post("/StockOut", (req, res) => {
-  productHelpers.OutOfStock(req.body.ProductId).then((Response) => {
+router.post("/update-to-StockOut", (req, res) => {
+  adminProductController.toggleStock(req.body.ProductId,false).then((Response) => {
     res.json(Response);
   });
 });
 
-router.post("/InStock", (req, res) => {
-  productHelpers.InStock(req.body.ProductId).then((Response) => {
+router.post("/update-to-InStock", (req, res) => {
+  adminProductController.toggleStock(req.body.ProductId,true).then((Response) => {
     res.json(Response);
   });
 });
 
 router.get("/OutofStock", (req, res) => {
-  productHelpers.listProducts().then((Products) => {
+  adminProductController.fetchAllOutOfStocks().then((Products) => {
     res.render("admin/Admin-Inactives/OutOfStocks", {
       AdminData: req.session.admin,
       Products,
@@ -614,7 +615,7 @@ router.get("/OutofStock", (req, res) => {
 });
 
 router.post("/updateShipment", (req, res) => {
-  orderHlepers.updateShipment(req.body).then((response) => {
+  adminShipmentContorller.updateShipment(req.body).then((response) => {
     res.json(response);
   });
 });

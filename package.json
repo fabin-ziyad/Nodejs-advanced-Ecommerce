@@ -22,7 +22,7 @@
     "http-errors": "~1.6.3",
     "mongodb": "^4.9.0",
     "morgan": "~1.9.1",
-    "nodemon": "^2.0.19",
+    "nodemon": "^2.0.22",
     "querystring": "^0.2.1",
     "razorpay": "^2.8.6",
     "sharp": "^0.31.2",

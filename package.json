@@ -20,12 +20,12 @@
     "handlebars-paginate": "^0.1.0",
     "hbs": "^4.2.0",
     "http-errors": "~1.6.3",
-    "mongodb": "^4.9.0",
+    "mongodb": "^6.0.0",
     "morgan": "~1.9.1",
-    "nodemon": "^2.0.19",
+    "nodemon": "^3.0.0",
     "querystring": "^0.2.1",
     "razorpay": "^2.8.6",
-    "sharp": "^0.31.2",
+    "sharp": "^0.33.0",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

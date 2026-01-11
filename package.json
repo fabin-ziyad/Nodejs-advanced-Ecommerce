@@ -24,7 +24,7 @@
     "morgan": "~1.9.1",
     "nodemon": "^2.0.19",
     "querystring": "^0.2.1",
-    "razorpay": "^2.8.6",
+    "razorpay": "^2.9.4",
     "sharp": "^0.31.2",
     "uuid": "^9.0.0"
   },
